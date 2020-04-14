@@ -109,3 +109,24 @@ func StringBinarySearch(nums []string, target string) int {
 	}
 	return -1
 }
+
+//二分查找插入的位置
+func StringBinarySearchPos(nums []string, target string) (int, bool) {
+	start, middle, end := 0, 0, len(nums)-1
+	for start <= end {
+		middle = start + (end-start)/2
+		if nums[middle] == target {
+			return middle, true
+		} else if nums[middle] > target {
+			end = middle - 1
+		} else {
+			start = middle + 1
+		}
+	}
+
+	if target < nums[middle] {
+		return middle, false
+	} else {
+		return middle + 1, false
+	}
+}
