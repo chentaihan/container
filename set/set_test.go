@@ -59,7 +59,7 @@ func TestSet_Add(t *testing.T) {
 	}
 
 	for index, test := range tests {
-		s := NewSet()
+		var s ISet = NewSet()
 		for i := 0; i < len(test.list); i++ {
 			s.Add(test.list[i])
 		}
@@ -126,7 +126,7 @@ func TestSet_Remove(t *testing.T) {
 	}
 
 	for index, test := range tests {
-		s := NewSet()
+		var s ISet = NewSet()
 		for i := 0; i < len(test.list); i++ {
 			s.Add(test.list[i])
 		}

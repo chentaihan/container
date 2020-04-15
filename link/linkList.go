@@ -5,17 +5,17 @@ type Node struct {
 	next  *Node
 }
 
-type LinkedList struct {
+type LinkList struct {
 	head *Node
 	tail *Node
 	size int
 }
 
-func NewLinkedList() *LinkedList {
-	return &LinkedList{}
+func NewLinkedList() ILinkList {
+	return &LinkList{}
 }
 
-func (lk *LinkedList) AddFirst(val interface{}) {
+func (lk *LinkList) PushFront(val interface{}) {
 	lk.head = &Node{
 		value: val,
 		next:  lk.head,
@@ -26,7 +26,7 @@ func (lk *LinkedList) AddFirst(val interface{}) {
 	lk.size++
 }
 
-func (lk *LinkedList) AddLast(val interface{}) {
+func (lk *LinkList) PushBack(val interface{}) {
 	node := &Node{
 		value: val,
 	}
@@ -39,7 +39,7 @@ func (lk *LinkedList) AddLast(val interface{}) {
 	lk.size++
 }
 
-func (lk *LinkedList) RemoveFirst() (interface{}, bool) {
+func (lk *LinkList) RemoveFront() (interface{}, bool) {
 	if lk.head == nil {
 		return nil, false
 	}
@@ -52,7 +52,7 @@ func (lk *LinkedList) RemoveFirst() (interface{}, bool) {
 	return val, true
 }
 
-func (lk *LinkedList) RemoveLast() (interface{}, bool) {
+func (lk *LinkList) RemoveBack() (interface{}, bool) {
 	if lk.head == nil {
 		return nil, false
 	}
@@ -71,7 +71,7 @@ func (lk *LinkedList) RemoveLast() (interface{}, bool) {
 	return val, true
 }
 
-func (lk *LinkedList) RemoveValue(val interface{}) int {
+func (lk *LinkList) RemoveValue(val interface{}) int {
 	count := 0
 	for cur := &lk.head; *cur != nil; {
 		if (*cur).value == val {
@@ -86,25 +86,25 @@ func (lk *LinkedList) RemoveValue(val interface{}) int {
 	return count
 }
 
-func (lk *LinkedList) GetFirst() (interface{}, bool) {
+func (lk *LinkList) Front() (interface{}, bool) {
 	if lk.head == nil {
 		return nil, false
 	}
 	return lk.head.value, true
 }
 
-func (lk *LinkedList) GetLast() (interface{}, bool) {
+func (lk *LinkList) Back() (interface{}, bool) {
 	if lk.head == nil {
 		return nil, false
 	}
 	return lk.tail.value, true
 }
 
-func (lk *LinkedList) Len() int {
+func (lk *LinkList) Len() int {
 	return lk.size
 }
 
-func (lk *LinkedList) Exist(val interface{}) bool {
+func (lk *LinkList) Exist(val interface{}) bool {
 	if lk.head == nil {
 		return false
 	}
@@ -116,7 +116,7 @@ func (lk *LinkedList) Exist(val interface{}) bool {
 	return false
 }
 
-func (lk *LinkedList) ToList() []interface{} {
+func (lk *LinkList) ToList() []interface{} {
 	list := make([]interface{}, lk.size)
 	index := 0
 	for node := lk.head; node != nil; node = node.next {
@@ -126,7 +126,7 @@ func (lk *LinkedList) ToList() []interface{} {
 	return list
 }
 
-func (lk *LinkedList) Clear() {
+func (lk *LinkList) Clear() {
 	lk.head = nil
 	lk.tail = nil
 	lk.size = 0

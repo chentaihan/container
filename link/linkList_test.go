@@ -6,29 +6,29 @@ func TestNewLinkedList(t *testing.T) {
 	list := NewLinkedList()
 	const count = 20
 	for i := 0; i < count; i++ {
-		list.AddLast(i)
+		list.PushBack(i)
 	}
 	if list.Len() != count {
 		t.Fatal("len error")
 	}
-	first, _ := list.GetFirst()
+	first, _ := list.Front()
 	if first != 0 {
-		t.Fatal("GetFirst error")
+		t.Fatal("Front error")
 	}
-	last, _ := list.GetLast()
+	last, _ := list.Back()
 	if last != count-1 {
-		t.Fatal("GetLast error")
+		t.Fatal("Back error")
 	}
 
-	list.RemoveFirst()
-	first, _ = list.GetFirst()
+	list.RemoveFront()
+	first, _ = list.Front()
 	if first != 1 {
-		t.Fatal("GetFirst error")
+		t.Fatal("Front error")
 	}
-	list.RemoveLast()
-	last, _ = list.GetLast()
+	list.RemoveBack()
+	last, _ = list.Back()
 	if last != count-2 {
-		t.Fatalf("GetLast error %v", last)
+		t.Fatalf("Back error %v", last)
 	}
 	if list.RemoveValue(10) != 1 {
 		t.Fatal("RemoveValue error")
@@ -36,7 +36,7 @@ func TestNewLinkedList(t *testing.T) {
 	array := list.ToList()
 	t.Log(array)
 	for i := 0; i < count; i++ {
-		list.AddLast(10)
+		list.PushBack(10)
 	}
 	array = list.ToList()
 	t.Log(array)
@@ -49,7 +49,7 @@ func TestNewLinkedList(t *testing.T) {
 	if list.Exist(10) {
 		t.Fatal("Exist error")
 	}
-	list.AddLast(10)
+	list.PushBack(10)
 	if !list.Exist(10) {
 		t.Fatal("Exist error")
 	}

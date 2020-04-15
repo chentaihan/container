@@ -6,7 +6,7 @@ type Set struct {
 	m    map[int]int
 }
 
-func NewSet() *Set {
+func NewSet() ISet {
 	return &Set{
 		list: []int{},
 		m:    make(map[int]int),

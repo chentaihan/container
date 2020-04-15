@@ -6,7 +6,7 @@ type SetSort struct {
 	as *array.ArraySort
 }
 
-func NewSetSort() *SetSort {
+func NewSetSort() ISet {
 	return &SetSort{
 		as: array.NewArraySort(0),
 	}
