@@ -1,7 +1,6 @@
 package tree
 
 import (
-	"fmt"
 	"github.com/chentaihan/container/common"
 	"testing"
 )
@@ -149,15 +148,27 @@ func TestNewBinaryTree(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		tree := NewBinaryTree()
+		tree := NewBinaryTreeInt()
 		tree.AddRange(test.nums)
-		fmt.Println(tree.GetDepth() == test.depth)
+		if tree.GetDepth() != test.depth {
+			t.Fatal("GetDepth error")
+		}
 		count := tree.GetCount()
-		fmt.Println(count == test.count)
-		fmt.Println(test.minVal == tree.MinNode(tree.root).Val)
-		fmt.Println(test.maxVal == tree.MaxNode(tree.root).Val)
-		fmt.Println(test.findResult == (tree.Find(test.findVal) != nil))
-		fmt.Println(common.IntEqual(test.list, tree.ToList()))
+		if count != test.count {
+			t.Fatal("GetCount error")
+		}
+		if test.minVal != tree.MinNode(tree.root).Val {
+			t.Fatal("MinNode error")
+		}
+		if test.maxVal != tree.MaxNode(tree.root).Val {
+			t.Fatal("MaxNode error")
+		}
+		if test.findResult != (tree.Find(test.findVal) != nil) {
+			t.Fatal("Find error")
+		}
+		if !common.IntEqual(test.list, tree.ToList()) {
+			t.Fatal("ToList error")
+		}
 	}
 }
 
@@ -304,7 +315,7 @@ func TestBinaryTree_Remove(t *testing.T) {
 		},
 	}
 	for index, test := range tests {
-		tree := NewBinaryTree()
+		tree := NewBinaryTreeInt()
 		tree.AddRange(test.nums)
 		tree.Remove(test.rmVAlue)
 		if !common.IntEqual(test.list, tree.FloorList(tree.root)) {

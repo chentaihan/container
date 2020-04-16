@@ -4,26 +4,29 @@ import (
 	"github.com/chentaihan/container/queue"
 )
 
-type TreeNodeInt struct {
-	Val    int
-	Left   *TreeNodeInt
-	Right  *TreeNodeInt
-	Parent *TreeNodeInt
+type ITree interface {
+	GetHashCode() int
+}
+type TreeNode struct {
+	Val    ITree
+	Left   *TreeNode
+	Right  *TreeNode
+	Parent *TreeNode
 }
 
-type BinaryTreeInt struct {
-	root  *TreeNodeInt
+type BinaryTree struct {
+	root  *TreeNode
 	count int
 }
 
-func NewBinaryTreeInt() *BinaryTreeInt {
-	return &BinaryTreeInt{}
+func NewBinaryTree() *BinaryTree {
+	return &BinaryTree{}
 }
 
 /**
 构造一棵树
 */
-func (tree *BinaryTreeInt) AddRange(nums []int) {
+func (tree *BinaryTree) AddRange(nums []ITree) {
 	for i := 0; i < len(nums); i++ {
 		tree.Add(nums[i])
 	}
@@ -32,8 +35,8 @@ func (tree *BinaryTreeInt) AddRange(nums []int) {
 /**
 树添加节点
 */
-func (tree *BinaryTreeInt) Add(val int) {
-	node := &TreeNodeInt{
+func (tree *BinaryTree) Add(val ITree) {
+	node := &TreeNode{
 		Val: val,
 	}
 	tree.count++
@@ -43,7 +46,7 @@ func (tree *BinaryTreeInt) Add(val int) {
 	}
 	curNode := tree.root
 	for curNode != nil {
-		if curNode.Val < val {
+		if curNode.Val.GetHashCode() < val.GetHashCode() {
 			if curNode.Right == nil {
 				curNode.Right = node
 				node.Parent = curNode
@@ -64,13 +67,13 @@ func (tree *BinaryTreeInt) Add(val int) {
 /**
 查找节点
 */
-func (tree *BinaryTreeInt) Find(val int) *TreeNodeInt {
+func (tree *BinaryTree) Find(val ITree) *TreeNode {
 	root := tree.root
 	for root != nil {
-		if root.Val == val {
+		if root.Val.GetHashCode() == val.GetHashCode() {
 			return root
 		}
-		if root.Val < val {
+		if root.Val.GetHashCode() < val.GetHashCode() {
 			root = root.Right
 		} else {
 			root = root.Left
@@ -79,33 +82,33 @@ func (tree *BinaryTreeInt) Find(val int) *TreeNodeInt {
 	return nil
 }
 
-func (tree *BinaryTreeInt) GetDepth() int {
-	return treeDepthInt(tree.root)
+func (tree *BinaryTree) GetDepth() int {
+	return treeDepth(tree.root)
 }
 
 /**
 计算树的深度
 */
-func treeDepthInt(root *TreeNodeInt) int {
+func treeDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	leftDepth := treeDepthInt(root.Left) + 1
-	rightDepth := treeDepthInt(root.Right) + 1
+	leftDepth := treeDepth(root.Left) + 1
+	rightDepth := treeDepth(root.Right) + 1
 	if leftDepth > rightDepth {
 		return leftDepth
 	}
 	return rightDepth
 }
 
-func (tree *BinaryTreeInt) GetCount() int {
+func (tree *BinaryTree) GetCount() int {
 	return tree.count
 }
 
 /**
 最小节点
 */
-func (tree *BinaryTreeInt) MinNode(root *TreeNodeInt) *TreeNodeInt {
+func (tree *BinaryTree) MinNode(root *TreeNode) *TreeNode {
 	if root == nil {
 		return root
 	}
@@ -118,7 +121,7 @@ func (tree *BinaryTreeInt) MinNode(root *TreeNodeInt) *TreeNodeInt {
 /**
 最大节点
 */
-func (tree *BinaryTreeInt) MaxNode(root *TreeNodeInt) *TreeNodeInt {
+func (tree *BinaryTree) MaxNode(root *TreeNode) *TreeNode {
 	if root == nil {
 		return root
 	}
@@ -132,13 +135,13 @@ func (tree *BinaryTreeInt) MaxNode(root *TreeNodeInt) *TreeNodeInt {
 删除节点
 rootNode用双指针是为了能删除根节点
 */
-func (tree *BinaryTreeInt) Remove(val int) bool {
+func (tree *BinaryTree) Remove(val ITree) bool {
 	targetNode := tree.Find(val)
 	if targetNode == nil {
 		return false
 	}
 
-	var removeNode *TreeNodeInt
+	var removeNode *TreeNode
 	if targetNode.Right != nil || targetNode.Left != nil {
 		//右子树最小值代替当节点
 		if targetNode.Right != nil {
@@ -174,23 +177,23 @@ func (tree *BinaryTreeInt) Remove(val int) bool {
 }
 
 //中序遍历得到排序数组
-func (tree *BinaryTreeInt) ToList() []int {
-	list := make([]int, 0)
-	toListInt(tree.root, &list)
+func (tree *BinaryTree) ToList() []ITree {
+	list := make([]ITree, 0)
+	toList(tree.root, &list)
 	return list
 }
 
-func toListInt(root *TreeNodeInt, list *[]int) {
+func toList(root *TreeNode, list *[]ITree) {
 	if root != nil {
-		toListInt(root.Left, list)
+		toList(root.Left, list)
 		*list = append(*list, root.Val)
-		toListInt(root.Right, list)
+		toList(root.Right, list)
 	}
 }
 
 //层序遍历
-func (tree *BinaryTreeInt) FloorList(root *TreeNodeInt) []int {
-	ret := make([]int, 0)
+func (tree *BinaryTree) FloorList(root *TreeNode) []ITree {
+	ret := make([]ITree, 0)
 	if root == nil {
 		return ret
 	}
@@ -198,7 +201,7 @@ func (tree *BinaryTreeInt) FloorList(root *TreeNodeInt) []int {
 	queue.Enqueue(root)
 	for !queue.Empty() {
 		node, _ := queue.Dequeue()
-		treeNode, _ := node.(*TreeNodeInt)
+		treeNode, _ := node.(*TreeNode)
 		if treeNode.Left != nil {
 			queue.Enqueue(treeNode.Left)
 		}
