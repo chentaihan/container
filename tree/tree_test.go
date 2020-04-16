@@ -154,9 +154,162 @@ func TestNewBinaryTree(t *testing.T) {
 		fmt.Println(tree.GetDepth() == test.depth)
 		count := tree.GetCount()
 		fmt.Println(count == test.count)
-		fmt.Println(test.minVal == tree.MinNode().Val)
-		fmt.Println(test.maxVal == tree.MaxNode().Val)
+		fmt.Println(test.minVal == tree.MinNode(tree.root).Val)
+		fmt.Println(test.maxVal == tree.MaxNode(tree.root).Val)
 		fmt.Println(test.findResult == (tree.Find(test.findVal) != nil))
 		fmt.Println(common.IntEqual(test.list, tree.ToList()))
+	}
+}
+
+func TestBinaryTree_Remove(t *testing.T) {
+	tests := []struct {
+		nums    []int
+		rmVAlue int
+		list    []int
+	}{
+		{
+			[]int{1},
+			1,
+			[]int{},
+		},
+		{
+			[]int{1, 2},
+			1,
+			[]int{2},
+		},
+		{
+			[]int{1, 2},
+			2,
+			[]int{1},
+		},
+		{
+			[]int{1, 3, 2},
+			3,
+			[]int{1, 2},
+		},
+		{
+			[]int{1, 3, 2},
+			2,
+			[]int{1, 3},
+		},
+		{
+			[]int{1, 4, 3, 2},
+			4,
+			[]int{1, 3, 2},
+		},
+		{
+			[]int{1, 4, 3, 2},
+			3,
+			[]int{1, 4, 2},
+		},
+		{
+			[]int{1, 4, 3, 2},
+			2,
+			[]int{1, 4, 3},
+		},
+		{
+			[]int{1, 4, 3, 2},
+			1,
+			[]int{2, 4, 3},
+		},
+		{
+			[]int{1, 2, 3, 4},
+			1,
+			[]int{2, 3, 4},
+		},
+		{
+			[]int{1, 2, 3, 4},
+			2,
+			[]int{1, 3, 4},
+		},
+		{
+			[]int{1, 2, 3, 4},
+			4,
+			[]int{1, 2, 3},
+		},
+		{
+			[]int{4, 3, 2, 1},
+			4,
+			[]int{3, 2, 1},
+		},
+		{
+			[]int{4, 3, 2, 1},
+			3,
+			[]int{4, 2, 1},
+		},
+		{
+			[]int{4, 3, 2, 1},
+			2,
+			[]int{4, 3, 1},
+		},
+		{
+			[]int{4, 3, 2, 1},
+			1,
+			[]int{4, 3, 2},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			6,
+			[]int{8, 3, 10, 2, 4, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			3,
+			[]int{6, 4, 10, 2, 8, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			10,
+			[]int{6, 3, 12, 2, 4, 8},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			2,
+			[]int{6, 3, 10, 4, 8, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			4,
+			[]int{6, 3, 10, 2, 8, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			8,
+			[]int{6, 3, 10, 2, 4, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12},
+			12,
+			[]int{6, 3, 10, 2, 4, 8},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12, 1},
+			1,
+			[]int{6, 3, 10, 2, 4, 8, 12},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12, 1, 15},
+			15,
+			[]int{6, 3, 10, 2, 4, 8, 12, 1},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12, 1, 11},
+			11,
+			[]int{6, 3, 10, 2, 4, 8, 12, 1},
+		},
+		{
+			[]int{6, 3, 10, 2, 4, 8, 12, 1, 11, 5},
+			5,
+			[]int{6, 3, 10, 2, 4, 8, 12, 1, 11},
+		},
+	}
+	for index, test := range tests {
+		tree := NewBinaryTree()
+		tree.AddRange(test.nums)
+		tree.Remove(test.rmVAlue)
+		if !common.IntEqual(test.list, tree.FloorList(tree.root)) {
+			t.Log(test.list, test.rmVAlue, tree.FloorList(tree.root))
+			t.Fatal("remove error", index)
+		}
 	}
 }

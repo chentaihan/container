@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestNewSetSort(t *testing.T) {
+func TestNewTreeSet(t *testing.T) {
 	tests := []struct {
 		array  []int
 		result []int
@@ -40,7 +40,7 @@ func TestNewSetSort(t *testing.T) {
 		},
 	}
 	for index, test := range tests {
-		ss := NewSetSort()
+		ss := NewTreeSet()
 		for i := 0; i < len(test.array); i++ {
 			ss.Add(test.array[i])
 		}
@@ -52,7 +52,7 @@ func TestNewSetSort(t *testing.T) {
 	}
 }
 
-func TestSetSort_Remove(t *testing.T) {
+func TestTreeSet_Remove(t *testing.T) {
 	tests := []struct {
 		array   []int
 		rmValue int
@@ -100,14 +100,14 @@ func TestSetSort_Remove(t *testing.T) {
 		},
 	}
 	for index, test := range tests {
-		ss := NewSetSort()
+		ss := NewTreeSet()
 		for i := 0; i < len(test.array); i++ {
 			ss.Add(test.array[i])
 		}
 		ss.Remove(test.rmValue)
 		list := ss.GetArray()
 		if !common.IntEqual(list, test.result) {
-			t.Log(list, test.result)
+			t.Log(list, test.rmValue, test.result)
 			t.Fatal("add error ", index)
 		}
 	}
