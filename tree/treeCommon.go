@@ -4,11 +4,11 @@ import (
 	"github.com/chentaihan/container/queue"
 )
 
-type ITree interface {
+type ITreeObject interface {
 	GetHashCode() int
 }
 type TreeNode struct {
-	Val    ITree
+	Val    ITreeObject
 	Left   *TreeNode
 	Right  *TreeNode
 	Parent *TreeNode
@@ -26,7 +26,7 @@ func NewBinaryTree() *BinaryTree {
 /**
 构造一棵树
 */
-func (tree *BinaryTree) AddRange(nums []ITree) {
+func (tree *BinaryTree) AddRange(nums []ITreeObject) {
 	for i := 0; i < len(nums); i++ {
 		tree.Add(nums[i])
 	}
@@ -35,7 +35,7 @@ func (tree *BinaryTree) AddRange(nums []ITree) {
 /**
 树添加节点
 */
-func (tree *BinaryTree) Add(val ITree) {
+func (tree *BinaryTree) Add(val ITreeObject) {
 	node := &TreeNode{
 		Val: val,
 	}
@@ -67,7 +67,7 @@ func (tree *BinaryTree) Add(val ITree) {
 /**
 查找节点
 */
-func (tree *BinaryTree) Find(val ITree) *TreeNode {
+func (tree *BinaryTree) Find(val ITreeObject) *TreeNode {
 	root := tree.root
 	for root != nil {
 		if root.Val.GetHashCode() == val.GetHashCode() {
@@ -135,7 +135,7 @@ func (tree *BinaryTree) MaxNode(root *TreeNode) *TreeNode {
 删除节点
 rootNode用双指针是为了能删除根节点
 */
-func (tree *BinaryTree) Remove(val ITree) bool {
+func (tree *BinaryTree) Remove(val ITreeObject) bool {
 	targetNode := tree.Find(val)
 	if targetNode == nil {
 		return false
@@ -177,13 +177,13 @@ func (tree *BinaryTree) Remove(val ITree) bool {
 }
 
 //中序遍历得到排序数组
-func (tree *BinaryTree) ToList() []ITree {
-	list := make([]ITree, 0)
+func (tree *BinaryTree) ToList() []ITreeObject {
+	list := make([]ITreeObject, 0)
 	toList(tree.root, &list)
 	return list
 }
 
-func toList(root *TreeNode, list *[]ITree) {
+func toList(root *TreeNode, list *[]ITreeObject) {
 	if root != nil {
 		toList(root.Left, list)
 		*list = append(*list, root.Val)
@@ -192,8 +192,8 @@ func toList(root *TreeNode, list *[]ITree) {
 }
 
 //层序遍历
-func (tree *BinaryTree) FloorList(root *TreeNode) []ITree {
-	ret := make([]ITree, 0)
+func (tree *BinaryTree) FloorList(root *TreeNode) []ITreeObject {
+	ret := make([]ITreeObject, 0)
 	if root == nil {
 		return ret
 	}
