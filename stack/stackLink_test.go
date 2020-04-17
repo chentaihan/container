@@ -1,4 +1,4 @@
-package common
+package stack
 
 import (
 	"fmt"

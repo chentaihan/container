@@ -1,4 +1,4 @@
-package common
+package stack
 
 type Stack struct {
 	buf  []interface{}
