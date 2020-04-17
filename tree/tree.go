@@ -29,6 +29,10 @@ func (tree *BinaryTreeInt) AddRange(nums []int) {
 	}
 }
 
+func (tree *BinaryTreeInt) GetRoot() *TreeNodeInt {
+	return tree.root
+}
+
 /**
 树添加节点
 */

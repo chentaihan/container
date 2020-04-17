@@ -1,4 +1,4 @@
-package cachel
+package cache
 
 import (
 	"github.com/chentaihan/container/common"
