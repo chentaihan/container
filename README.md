@@ -2,19 +2,19 @@
 
 ## 常用集合实现
 
-* <a href="## 1：队列">队列</a>
-* <a href="## 2：栈">栈</a>
-* <a href="## 2：栈">排序数组</a>
-* <a href="## 2：栈">单链表</a>
-* <a href="## 2：栈">Map</a>
-* <a href="## 2：栈">Set</a>
-* <a href="## 2：栈">SetSort</a>
-* <a href="## 2：栈">搜索二叉树</a>
-* <a href="## 2：栈">LRU</a>
-* <a href="## 2：栈">内存池</a>
-* <a href="## 2：栈">常用函数</a>
+* <a href="#队列">队列</a>
+* <a href="#栈">栈</a>
+* <a href="#排序数组">排序数组</a>
+* <a href="#栈">单链表</a>
+* <a href="#栈">Map</a>
+* <a href="#栈">Set</a>
+* <a href="#栈">SetSort</a>
+* <a href="#栈">搜索二叉树</a>
+* <a href="#栈">LRU</a>
+* <a href="#栈">内存池</a>
+* <a href="#栈">常用函数</a>
 
-## 1：队列
+## <a id="队列">1：队列</a>
 
 ```go
 type IQueue interface {
@@ -81,50 +81,65 @@ func main() {
 ```
 
 
-## 2：栈
-
-```go
-type IStack interface {
-	Push(x interface{})       //入栈
-	Pop() (interface{}, bool) //出栈
-	Top() (interface{}, bool) //栈顶元素
-	Empty() bool              //栈是否为空
-	Len() int                 //栈元素个数
-	Cap() int                 //栈容量
-}
-```
+## <a id="排序数组">3：排序数组</a>
 
 ```go
 package main
 
 import (
 	"fmt"
-	"github.com/chentaihan/container/stack"
+	"github.com/chentaihan/container/array"
+	"github.com/chentaihan/container/common"
 )
 
 func main() {
-	var s stack.IStack = stack.NewStack(100)
-	//var s stack.IStack = stack.NewStackLink()
-	size := 10
-	for i := 0; i < size; i++ {
-		s.Push(i)
+	tests := []struct {
+		array  []int
+		result []int
+	}{
+		{
+			[]int{},
+			[]int{},
+		},
+		{
+			[]int{1},
+			[]int{1},
+		},
+		{
+			[]int{1, 3},
+			[]int{1, 3},
+		},
+		{
+			[]int{1, 3, 2},
+			[]int{1, 2, 3},
+		},
+		{
+			[]int{1, 3, 2, 4, 6, 5, 9, 8, 7},
+			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		},
 	}
-	if s.Len() != size {
-		fmt.Println("len error")
-	}
-	fmt.Println("cap=", s.Cap())
-	for !s.Empty() {
-		if val, exist := s.Top(); exist {
-			fmt.Println(val)
+	for index, test := range tests {
+		as := array.NewArraySort(0)
+		for i := 0; i < len(test.array); i++ {
+			as.Add(test.array[i])
 		}
-		s.Pop()
-	}
-	if s.Len() != 0 {
-		fmt.Println("empty error")
+		list := as.GetArray()
+		if !common.IntEqual(list, test.result) {
+			fmt.Println(list, test.result)
+			fmt.Println("add error ", index)
+		}
+		as.RemoveValue(1)
 	}
 }
 
+
 ```
+
+
+
+
+
+
 
 
 
