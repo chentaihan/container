@@ -3,6 +3,7 @@
 ## 常用集合实现
 
 * <a href="#队列">队列</a>
+* <a href="#队列">优先级队列</a>
 * <a href="#栈">栈</a>
 * <a href="#排序数组">排序数组</a>
 * <a href="#单链表">单链表</a>
@@ -11,6 +12,7 @@
 * <a href="#Set">SetSort</a>
 * <a href="#二叉搜索树">二叉搜索树</a>
 * <a href="#LRU">LRU</a>
+* <a href="#堆">堆</a>
 * <a href="https://github.com/chentaihan/container/tree/master/pool">内存池</a>
 * <a href="https://github.com/chentaihan/container/tree/master/common">常用函数</a>
 
@@ -32,53 +34,148 @@ type IQueue interface {
 package main
 
 import (
-    "fmt"
-    "github.com/chentaihan/container/queue"
+	"fmt"
+	"github.com/chentaihan/container/queue"
 )
 
 func main() {
-    size := 2000
-    var q queue.IQueue = queue.NewQueue(size)
-    //var q queue.IQueue = queue.NewQueueLink()
-    for i := 0; i < size; i++ {
-        q.Enqueue(i)
-    }
-    if q.Len() != size {
-        fmt.Println("queue len error")
-    }
-    if q.Cap() != size {
-        fmt.Println("queue cap error,cap=", q.Cap())
-    }
-    value, isOK := q.Peek()
-    if isOK {
-        if value.(int) != 0 {
-            fmt.Println("queue peek error")
-        }
-    }
-
-    for i := 0; i < size; i++ {
-        q.Enqueue(i)
-    }
-    if q.Cap() != size*2 {
-        fmt.Println("queue cap error,cap=", q.Cap())
-    }
-    count := q.Len()
-    index := 0
-    for !q.Empty() {
-        q.Dequeue()
-        index++
-    }
-    if count != index {
-        fmt.Println(fmt.Sprintf("len = %v != count = %v", index, count))
-    }
-    for i := 0; i < size*8; i++ {
-        q.Enqueue(i)
-    }
-    if q.Cap() != size*8 {
-        fmt.Println(fmt.Sprintf("queue cap error,cap=%v,want cap=%v", q.Cap(), size*8))
-    }
+	queueTest()         //普通队列测试
+	priorityQueueTest() //优先级队列测试
 }
+
+func queueTest() {
+	size := 2000
+	var q queue.IQueue = queue.NewQueue(size) //数组实现队列
+	//var q queue.IQueue = queue.NewQueueLink() //链表实现队列
+	for i := 0; i < size; i++ {
+		q.Enqueue(i)
+	}
+	if q.Len() != size {
+		fmt.Println("queue len error")
+	}
+	if q.Cap() != size {
+		fmt.Println("queue cap error,cap=", q.Cap())
+	}
+	value, isOK := q.Peek()
+	if isOK {
+		if value.(int) != 0 {
+			fmt.Println("queue peek error")
+		}
+	}
+
+	for i := 0; i < size; i++ {
+		q.Enqueue(i)
+	}
+	if q.Cap() != size*2 {
+		fmt.Println("queue cap error,cap=", q.Cap())
+	}
+	count := q.Len()
+	index := 0
+	for !q.Empty() {
+		q.Dequeue()
+		index++
+	}
+	if count != index {
+		fmt.Println(fmt.Sprintf("len = %v != count = %v", index, count))
+	}
+	for i := 0; i < size*8; i++ {
+		q.Enqueue(i)
+	}
+	if q.Cap() != size*8 {
+		fmt.Println(fmt.Sprintf("queue cap error,cap=%v,want cap=%v", q.Cap(), size*8))
+	}
+}
+
+type integer int
+
+func (i integer) GetPriority() int {
+	return int(i)
+}
+
+func (i integer) GetHashCode() int {
+	return int(i)
+}
+
+func priorityQueueTest() {
+	count := 100
+	heap := queue.NewPriorityQueue(count)
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	if !heap.Contains(integer(20)) {
+		fmt.Println("Contain error")
+	}
+	if !heap.Remove(integer(20)) {
+		fmt.Println("remove error")
+	}
+	heap.Push(integer(20))
+	for heap.Len() > 0 {
+		l := heap.Len()
+		val := heap.Pop()
+		if val.GetHashCode() != count-l {
+			fmt.Println("pop error", val.GetHashCode(), count-l)
+		}
+	}
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	list := heap.GetArray()
+	fmt.Println(list)
+	heap.Pop()
+	list = heap.GetArray()
+	fmt.Println(list)
+	heap.Push(integer(20))
+	list = heap.GetArray()
+	fmt.Println(list)
+	for heap.Len() > 0 {
+		heap.Pop()
+	}
+	if !heap.Empty() {
+		fmt.Println("clear error")
+	}
+	heap.Clear()
+	if !heap.Empty() {
+		fmt.Println("clear error")
+	}
+}
+
 ```
+
+## <a id="栈">2：栈</a>
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/chentaihan/container/stack"
+)
+
+func main() {
+	var s stack.IStack = stack.NewStack(100)
+	//var s stack.IStack = stack.NewStackLink()
+	size := 10
+	for i := 0; i < size; i++ {
+		s.Push(i)
+	}
+	if s.Len() != size {
+		fmt.Println("len error")
+	}
+	fmt.Println("cap=", s.Cap())
+	for !s.Empty() {
+		if val, exist := s.Top(); exist {
+			fmt.Println(val)
+		}
+		s.Pop()
+	}
+	if s.Len() != 0 {
+		fmt.Println("empty error")
+	}
+}
+
+```
+
+
 
 
 ## <a id="排序数组">3：排序数组</a>
@@ -464,6 +561,205 @@ func main() {
 }
 
 ```
+
+## <a id="堆">7：堆</a>
+
+```go
+package main
+
+import (
+	"fmt"
+	heap2 "github.com/chentaihan/container/heap"
+)
+
+type integer int
+
+func (i integer) GetHashCode() int {
+	return int(i)
+}
+
+func main() {
+	count := 100
+	heap := heap2.NewBigHeap(count) //大堆
+	//heap := heap2.NewSmallHeap(count) //小堆
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	if !heap.Contains(integer(20)) {
+		fmt.Println("Contain error")
+	}
+	if !heap.Remove(integer(20)) {
+		fmt.Println("remove error")
+	}
+	heap.Push(integer(20))
+	for heap.Len() > 0 {
+		l := heap.Len()
+		val := heap.Pop()
+		if val.GetHashCode() != l-1 {
+			fmt.Println("pop error", val.GetHashCode(), l-1)
+		}
+	}
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	list := heap.GetArray()
+	fmt.Println(list)
+	heap.Pop()
+	list = heap.GetArray()
+	fmt.Println(list)
+	heap.Push(integer(20))
+	list = heap.GetArray()
+	fmt.Println(list)
+	for heap.Len() > 0 {
+		heap.Pop()
+	}
+	if !heap.Empty() {
+		fmt.Println("clear error")
+	}
+	heap.Clear()
+	if !heap.Empty() {
+		fmt.Println("clear error")
+	}
+
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

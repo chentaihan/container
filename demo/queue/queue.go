@@ -6,8 +6,13 @@ import (
 )
 
 func main() {
+	queueTest()         //普通队列测试
+	priorityQueueTest() //优先级队列测试
+}
+
+func queueTest() {
 	size := 2000
-	var q queue.IQueue = queue.NewQueue(size)  //数组实现队列
+	var q queue.IQueue = queue.NewQueue(size) //数组实现队列
 	//var q queue.IQueue = queue.NewQueueLink() //链表实现队列
 	for i := 0; i < size; i++ {
 		q.Enqueue(i)
@@ -45,5 +50,58 @@ func main() {
 	}
 	if q.Cap() != size*8 {
 		fmt.Println(fmt.Sprintf("queue cap error,cap=%v,want cap=%v", q.Cap(), size*8))
+	}
+}
+
+type integer int
+
+func (i integer) GetPriority() int {
+	return int(i)
+}
+
+func (i integer) GetHashCode() int {
+	return int(i)
+}
+
+func priorityQueueTest() {
+	count := 100
+	heap := queue.NewPriorityQueue(count)
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	if !heap.Contains(integer(20)) {
+		fmt.Println("Contain error")
+	}
+	if !heap.Remove(integer(20)) {
+		fmt.Println("remove error")
+	}
+	heap.Push(integer(20))
+	for heap.Len() > 0 {
+		l := heap.Len()
+		val := heap.Pop()
+		if val.GetHashCode() != count-l {
+			fmt.Println("pop error", val.GetHashCode(), count-l)
+		}
+	}
+	for i := 0; i < count; i++ {
+		heap.Push(integer(i))
+	}
+	list := heap.GetArray()
+	fmt.Println(list)
+	heap.Pop()
+	list = heap.GetArray()
+	fmt.Println(list)
+	heap.Push(integer(20))
+	list = heap.GetArray()
+	fmt.Println(list)
+	for heap.Len() > 0 {
+		heap.Pop()
+	}
+	if !heap.Empty() {
+		fmt.Println("clear error")
+	}
+	heap.Clear()
+	if !heap.Empty() {
+		fmt.Println("clear error")
 	}
 }
