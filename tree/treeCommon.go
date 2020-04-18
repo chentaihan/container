@@ -4,11 +4,12 @@ import (
 	"github.com/chentaihan/container/queue"
 )
 
-type ITreeObject interface {
+type IObject interface {
 	GetHashCode() int
 }
+
 type TreeNode struct {
-	Val    ITreeObject
+	Val    IObject
 	Left   *TreeNode
 	Right  *TreeNode
 	Parent *TreeNode
@@ -26,7 +27,7 @@ func NewBinaryTree() *BinaryTree {
 /**
 构造一棵树
 */
-func (tree *BinaryTree) AddRange(nums []ITreeObject) {
+func (tree *BinaryTree) AddRange(nums []IObject) {
 	for i := 0; i < len(nums); i++ {
 		tree.Add(nums[i])
 	}
@@ -35,7 +36,7 @@ func (tree *BinaryTree) AddRange(nums []ITreeObject) {
 /**
 树添加节点
 */
-func (tree *BinaryTree) Add(val ITreeObject) {
+func (tree *BinaryTree) Add(val IObject) {
 	node := &TreeNode{
 		Val: val,
 	}
@@ -67,7 +68,7 @@ func (tree *BinaryTree) Add(val ITreeObject) {
 /**
 查找节点
 */
-func (tree *BinaryTree) Find(val ITreeObject) *TreeNode {
+func (tree *BinaryTree) Find(val IObject) *TreeNode {
 	root := tree.root
 	for root != nil {
 		if root.Val.GetHashCode() == val.GetHashCode() {
@@ -135,7 +136,7 @@ func (tree *BinaryTree) MaxNode(root *TreeNode) *TreeNode {
 删除节点
 rootNode用双指针是为了能删除根节点
 */
-func (tree *BinaryTree) Remove(val ITreeObject) bool {
+func (tree *BinaryTree) Remove(val IObject) bool {
 	targetNode := tree.Find(val)
 	if targetNode == nil {
 		return false
@@ -177,13 +178,13 @@ func (tree *BinaryTree) Remove(val ITreeObject) bool {
 }
 
 //中序遍历得到排序数组
-func (tree *BinaryTree) ToList() []ITreeObject {
-	list := make([]ITreeObject, 0)
+func (tree *BinaryTree) ToList() []IObject {
+	list := make([]IObject, 0)
 	toList(tree.root, &list)
 	return list
 }
 
-func toList(root *TreeNode, list *[]ITreeObject) {
+func toList(root *TreeNode, list *[]IObject) {
 	if root != nil {
 		toList(root.Left, list)
 		*list = append(*list, root.Val)
@@ -192,8 +193,8 @@ func toList(root *TreeNode, list *[]ITreeObject) {
 }
 
 //层序遍历
-func (tree *BinaryTree) FloorList(root *TreeNode) []ITreeObject {
-	ret := make([]ITreeObject, 0)
+func (tree *BinaryTree) FloorList(root *TreeNode) []IObject {
+	ret := make([]IObject, 0)
 	if root == nil {
 		return ret
 	}

@@ -10,7 +10,7 @@ func (i integer) GetHashCode() int {
 	return int(i)
 }
 
-func intEqual(nums1, nums2 []ITreeObject) bool {
+func intEqual(nums1, nums2 []IObject) bool {
 	if (nums1 == nil && nums2 != nil) || (nums1 != nil && nums2 == nil) {
 		return false
 	}
@@ -188,7 +188,7 @@ func TestNewBinaryTreeCommon(t *testing.T) {
 		if test.findResult != (tree.Find(integer(test.findVal)) != nil) {
 			t.Fatal("Find error")
 		}
-		var list []ITreeObject
+		var list []IObject
 		for i := 0; i < len(test.list); i++ {
 			list = append(list, test.list[i])
 		}
@@ -346,7 +346,7 @@ func TestBinaryTreeCommon_Remove(t *testing.T) {
 			tree.Add(test.nums[i])
 		}
 		tree.Remove(integer(test.rmVAlue))
-		list := make([]ITreeObject, 0)
+		list := make([]IObject, 0)
 		for i := 0; i < len(test.list); i++ {
 			list = append(list, test.list[i])
 		}
