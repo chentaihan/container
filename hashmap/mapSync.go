@@ -1,5 +1,7 @@
 package hashmap
 
+//同步map，读写锁map
+
 import (
 	"encoding/json"
 	"sync"
@@ -10,7 +12,7 @@ type MapSync struct {
 	lock  sync.RWMutex
 }
 
-func NewMapSync() *MapSync {
+func NewMapSync() IMap {
 	return &MapSync{
 		mData: map[string]interface{}{},
 	}
@@ -29,22 +31,11 @@ func (sm *MapSync) Set(key string, value interface{}) {
 	sm.lock.Unlock()
 }
 
-func (sm *MapSync) Copy(mData map[string]interface{}) {
+func (sm *MapSync) Remove(key string) bool {
 	sm.lock.Lock()
-	for key, value := range mData {
-		sm.mData[key] = value
-	}
+	delete(sm.mData, key)
 	sm.lock.Unlock()
-}
-
-func (sm *MapSync) Clone() map[string]interface{} {
-	m := make(map[string]interface{}, sm.Len())
-	sm.lock.Lock()
-	for key, value := range sm.mData {
-		m[key] = value
-	}
-	sm.lock.Unlock()
-	return m
+	return true
 }
 
 func (sm *MapSync) Clear() {
@@ -84,4 +75,26 @@ func (sm *MapSync) Len() int {
 	l := len(sm.mData)
 	sm.lock.RUnlock()
 	return l
+}
+
+func (sm *MapSync) Values() []interface{} {
+	list := make([]interface{}, len(sm.mData))
+	index := 0
+	sm.lock.RLock()
+	for _, val := range sm.mData {
+		list[index] = val
+	}
+	sm.lock.RUnlock()
+	return list
+}
+
+func (sm *MapSync) Keys() []string {
+	list := make([]string, len(sm.mData))
+	index := 0
+	sm.lock.RLock()
+	for key := range sm.mData {
+		list[index] = key
+	}
+	sm.lock.RUnlock()
+	return list
 }

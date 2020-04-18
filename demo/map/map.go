@@ -31,7 +31,7 @@ func main() {
 			"value5",
 		},
 	}
-	sm := hashmap.NewMapSync()
+	sm := hashmap.NewMap()
 	for _, test := range tests {
 		sm.Set(test.key, test.value)
 	}

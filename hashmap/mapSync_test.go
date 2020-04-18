@@ -28,7 +28,7 @@ func TestSyncMap_Set(t *testing.T) {
 			"value5",
 		},
 	}
-	sm := NewMapSync()
+	sm := NewMap()
 	for _, test := range tests {
 		sm.Set(test.key, test.value)
 	}
@@ -73,7 +73,7 @@ func TestSyncMap_Set(t *testing.T) {
 		t.Fatal("clear ", sm.Len())
 	}
 
-	var sm1 *MapSync
+	var sm1 *Map
 	if sm1.Len() != 0 {
 		t.Fatal("clear ", sm1.Len())
 	}
