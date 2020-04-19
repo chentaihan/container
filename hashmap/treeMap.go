@@ -44,44 +44,44 @@ func NewTreeMap() IMap {
 	}
 }
 
-func (as *TreeMap) Set(key string, value interface{}) {
+func (tm *TreeMap) Set(key string, value interface{}) {
 	et := newTreeEntity(key, value)
-	if node := as.tree.Find(et); node != nil {
+	if node := tm.tree.Find(et); node != nil {
 		node.Val = et
 	} else {
-		as.tree.Add(et)
+		tm.tree.Add(et)
 	}
 }
 
-func (as *TreeMap) Get(key string) (interface{}, bool) {
+func (tm *TreeMap) Get(key string) (interface{}, bool) {
 	et := newTreeEntity(key, nil)
-	if node := as.tree.Find(et); node != nil {
+	if node := tm.tree.Find(et); node != nil {
 		return node.Val.(*treeEntity).value, true
 	} else {
 		return nil, false
 	}
 }
 
-func (as *TreeMap) Exist(key string) bool {
+func (tm *TreeMap) Exist(key string) bool {
 	et := newTreeEntity(key, nil)
-	return as.tree.Find(et) != nil
+	return tm.tree.Find(et) != nil
 }
 
-func (as *TreeMap) Remove(key string) bool {
+func (tm *TreeMap) Remove(key string) bool {
 	et := newTreeEntity(key, nil)
-	return as.tree.Remove(et)
+	return tm.tree.Remove(et)
 }
 
-func (as *TreeMap) Len() int {
-	return as.tree.GetCount()
+func (tm *TreeMap) Len() int {
+	return tm.tree.GetCount()
 }
 
-func (as *TreeMap) Clear() {
-	as.tree = tree.NewBinaryTree()
+func (tm *TreeMap) Clear() {
+	tm.tree = tree.NewBinaryTree()
 }
 
-func (as *TreeMap) Values() []interface{} {
-	list := as.tree.ToList()
+func (tm *TreeMap) Values() []interface{} {
+	list := tm.tree.ToList()
 	result := make([]interface{}, len(list))
 	for i := 0; i < len(list); i++ {
 		result[i] = list[i].(*treeEntity).value
@@ -89,8 +89,8 @@ func (as *TreeMap) Values() []interface{} {
 	return result
 }
 
-func (as *TreeMap) Keys() []string {
-	list := as.tree.ToList()
+func (tm *TreeMap) Keys() []string {
+	list := tm.tree.ToList()
 	result := make([]string, len(list))
 	for i := 0; i < len(list); i++ {
 		result[i] = list[i].(*treeEntity).key
@@ -98,8 +98,8 @@ func (as *TreeMap) Keys() []string {
 	return result
 }
 
-func (sm *TreeMap) Marshal() ([]byte, error) {
-	list := sm.tree.ToList()
+func (tm *TreeMap) Marshal() ([]byte, error) {
+	list := tm.tree.ToList()
 	m := make(map[string]interface{}, len(list))
 	for i := 0; i < len(list); i++ {
 		item := list[i].(*treeEntity)
@@ -108,14 +108,14 @@ func (sm *TreeMap) Marshal() ([]byte, error) {
 	return json.Marshal(m)
 }
 
-func (sm *TreeMap) Unmarshal(data []byte) error {
+func (tm *TreeMap) Unmarshal(data []byte) error {
 	m := map[string]interface{}{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
 		return err
 	}
 	for key, value := range m {
-		sm.Set(key, value)
+		tm.Set(key, value)
 	}
 	return err
 }

@@ -31,7 +31,10 @@ func main() {
 			"value5",
 		},
 	}
-	sm := hashmap.NewMap()
+	sm := hashmap.NewMap()     //map简单封装
+	//sm := hashmap.NewMapSync() //同步map
+	//sm := hashmap.NewTreeMap() //二叉树map
+	//sm := hashmap.NewLinkMap() //顺序map
 	for _, test := range tests {
 		sm.Set(test.key, test.value)
 	}

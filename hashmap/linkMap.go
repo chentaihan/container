@@ -1,6 +1,9 @@
 package hashmap
 
-//对map的简单封装
+/*
+顺序map
+按照添加元素的顺序保存，Keys,Values能按照添加顺序输出所有内容
+ */
 
 import (
 	"container/list"
