@@ -103,7 +103,7 @@ func (bh *PriorityQueue) Remove(h IPriorityQueue) bool {
 	return false
 }
 
-func (bh *PriorityQueue) Contains(h IPriorityQueue) bool {
+func (bh *PriorityQueue) Exist(h IPriorityQueue) bool {
 	if bh.Len() == 0 || bh.Peek().GetPriority() > h.GetHashCode() {
 		return false
 	}

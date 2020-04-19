@@ -14,7 +14,7 @@ func TestNewBigHeap(t *testing.T) {
 	for i := 0; i < count; i++ {
 		heap.Push(integer(i))
 	}
-	if !heap.Contains(integer(20)) {
+	if !heap.Exist(integer(20)) {
 		t.Fatal("Contain error")
 	}
 	if !heap.Remove(integer(20)) {

@@ -102,7 +102,7 @@ func priorityQueueTest() {
 	for i := 0; i < count; i++ {
 		heap.Push(integer(i))
 	}
-	if !heap.Contains(integer(20)) {
+	if !heap.Exist(integer(20)) {
 		fmt.Println("Contain error")
 	}
 	if !heap.Remove(integer(20)) {
@@ -142,6 +142,22 @@ func priorityQueueTest() {
 ```
 
 ## <a id="栈">2：栈</a>
+
+
+```go
+//栈接口
+
+type IStack interface {
+	Push(x interface{})       //入栈
+	Pop() (interface{}, bool) //出栈
+	Top() (interface{}, bool) //栈顶元素
+	Empty() bool              //栈是否为空
+	Len() int                 //栈元素个数
+	Cap() int                 //栈容量
+}
+```
+
+
 
 ```go
 package main
@@ -221,6 +237,26 @@ func main() {
 ```
 
 ## <a id="单链表">4：单链表</a>
+
+
+```go
+//链表接口
+type ILinkList interface {
+	PushFront(val interface{})        //首部添加元素
+	PushBack(val interface{})         //尾部添加元素
+	RemoveFront() (interface{}, bool) //删除首部元素，成功true，失败false
+	RemoveBack() (interface{}, bool)  //删除尾部元素，成功true，失败false
+	RemoveValue(val interface{}) int  ////删除指定值，返回被删除元素数量
+	Front() (interface{}, bool)       //返回首部元素，存在true，不存在false
+	Back() (interface{}, bool)        //返回尾部元素，存在true，不存在false
+	Len() int                         //元素个数
+	Exist(val interface{}) bool       //指定元素是否存在
+	ToList() []interface{}            //转换成数组
+	Clear()                           //删除所有元素
+}
+```
+
+
 
 ```go
 package main
@@ -585,6 +621,31 @@ func main() {
 
 ## <a id="堆">7：堆</a>
 
+
+```go
+//堆接口
+
+type IObject interface {
+	GetHashCode() int //按照这个函数排序
+}
+
+type IHeap interface {
+	Push(h IObject)          //添加元素
+	Pop() IObject            //删除顶部元素（第0个元素）
+	Peek() IObject           //获取顶部元素（第0个元素）
+	Remove(h IObject) bool   //删除指定下标元素
+	Len() int                //元素个数
+	Cap() int                //容量
+	Empty() bool             //堆是否为空
+	Exist(h IObject) bool    //是否包含指定元素
+	Clear()                  //删除所有元素
+	GetArray() []IObject     //获取元素数组（不复制）
+	Copy() []IObject         //复制所有元素
+}
+```
+
+
+
 ```go
 package main
 
@@ -606,7 +667,7 @@ func main() {
 	for i := 0; i < count; i++ {
 		heap.Push(integer(i))
 	}
-	if !heap.Contains(integer(20)) {
+	if !heap.Exist(integer(20)) {
 		fmt.Println("Contain error")
 	}
 	if !heap.Remove(integer(20)) {

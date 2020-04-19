@@ -98,7 +98,7 @@ func (bh *SmallHeap) Remove(h IObject) bool {
 	return false
 }
 
-func (bh *SmallHeap) Contains(h IObject) bool {
+func (bh *SmallHeap) Exist(h IObject) bool {
 	if bh.Len() == 0 || bh.Peek().GetHashCode() > h.GetHashCode() {
 		return false
 	}

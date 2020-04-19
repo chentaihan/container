@@ -98,7 +98,7 @@ func (bh *BigHeap) Remove(h IObject) bool {
 	return false
 }
 
-func (bh *BigHeap) Contains(h IObject) bool {
+func (bh *BigHeap) Exist(h IObject) bool {
 	if bh.Len() == 0 || bh.Peek().GetHashCode() < h.GetHashCode() {
 		return false
 	}
