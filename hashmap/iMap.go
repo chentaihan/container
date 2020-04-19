@@ -14,3 +14,8 @@ type IMap interface {
 	Marshal() ([]byte, error)           //序列化
 	Unmarshal(data []byte) error        //反序列化
 }
+
+type entity struct {
+	key string
+	value interface{}
+}

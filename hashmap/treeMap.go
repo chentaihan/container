@@ -12,23 +12,24 @@ type IObject interface {
 	GetHashCode() int
 }
 
-type entity struct {
-	key      string
-	value    interface{}
+type treeEntity struct {
+	entity
 	hashCode int
 }
 
-func (et *entity) GetHashCode() int {
+func (et *treeEntity) GetHashCode() int {
 	if et.hashCode < 0 {
 		et.hashCode = int(common.GetHashCode([]byte(et.key)))
 	}
 	return et.hashCode
 }
 
-func newEntity(key string, value interface{}) *entity {
-	return &entity{
-		key:      key,
-		value:    value,
+func newTreeEntity(key string, value interface{}) *treeEntity {
+	return &treeEntity{
+		entity: entity{
+			key:   key,
+			value: value,
+		},
 		hashCode: -1,
 	}
 }
@@ -44,7 +45,7 @@ func NewTreeMap() IMap {
 }
 
 func (as *TreeMap) Set(key string, value interface{}) {
-	et := newEntity(key, value)
+	et := newTreeEntity(key, value)
 	if node := as.tree.Find(et); node != nil {
 		node.Val = et
 	} else {
@@ -53,21 +54,21 @@ func (as *TreeMap) Set(key string, value interface{}) {
 }
 
 func (as *TreeMap) Get(key string) (interface{}, bool) {
-	et := newEntity(key, nil)
+	et := newTreeEntity(key, nil)
 	if node := as.tree.Find(et); node != nil {
-		return node.Val.(*entity).value, true
+		return node.Val.(*treeEntity).value, true
 	} else {
 		return nil, false
 	}
 }
 
 func (as *TreeMap) Exist(key string) bool {
-	et := newEntity(key, nil)
+	et := newTreeEntity(key, nil)
 	return as.tree.Find(et) != nil
 }
 
 func (as *TreeMap) Remove(key string) bool {
-	et := newEntity(key, nil)
+	et := newTreeEntity(key, nil)
 	return as.tree.Remove(et)
 }
 
@@ -83,7 +84,7 @@ func (as *TreeMap) Values() []interface{} {
 	list := as.tree.ToList()
 	result := make([]interface{}, len(list))
 	for i := 0; i < len(list); i++ {
-		result[i] = list[i].(*entity).value
+		result[i] = list[i].(*treeEntity).value
 	}
 	return result
 }
@@ -92,7 +93,7 @@ func (as *TreeMap) Keys() []string {
 	list := as.tree.ToList()
 	result := make([]string, len(list))
 	for i := 0; i < len(list); i++ {
-		result[i] = list[i].(*entity).key
+		result[i] = list[i].(*treeEntity).key
 	}
 	return result
 }
@@ -101,7 +102,7 @@ func (sm *TreeMap) Marshal() ([]byte, error) {
 	list := sm.tree.ToList()
 	m := make(map[string]interface{}, len(list))
 	for i := 0; i < len(list); i++ {
-		item := list[i].(*entity)
+		item := list[i].(*treeEntity)
 		m[item.key] = item.value
 	}
 	return json.Marshal(m)
