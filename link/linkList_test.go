@@ -31,7 +31,7 @@ func TestNewLinkedList(t *testing.T) {
 		t.Fatalf("Back error %v", last)
 	}
 	if list.RemoveValue(10) != 1 {
-		t.Fatal("RemoveValue error")
+		t.Fatal("Remove error")
 	}
 	array := list.ToList()
 	t.Log(array)
@@ -41,7 +41,7 @@ func TestNewLinkedList(t *testing.T) {
 	array = list.ToList()
 	t.Log(array)
 	if list.RemoveValue(10) != count {
-		t.Fatal("RemoveValue error")
+		t.Fatal("Remove error")
 	}
 	array = list.ToList()
 	t.Log(array)

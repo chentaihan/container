@@ -26,7 +26,7 @@ func (ss *SetSort) Exist(val int) bool {
 }
 
 func (ss *SetSort) Remove(val int) bool {
-	return ss.as.RemoveValue(val) > 0
+	return ss.as.Remove(val) > 0
 }
 
 func (ss *SetSort) Len() int {

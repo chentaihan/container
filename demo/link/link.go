@@ -34,7 +34,7 @@ func main() {
 		fmt.Println("Back error ", last)
 	}
 	if list.RemoveValue(10) != 1 {
-		fmt.Println("RemoveValue error")
+		fmt.Println("Remove error")
 	}
 	array := list.ToList()
 	fmt.Println(array)
@@ -44,7 +44,7 @@ func main() {
 	array = list.ToList()
 	fmt.Println(array)
 	if list.RemoveValue(10) != count {
-		fmt.Println("RemoveValue error")
+		fmt.Println("Remove error")
 	}
 	array = list.ToList()
 	fmt.Println(array)

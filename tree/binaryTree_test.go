@@ -179,10 +179,10 @@ func TestNewBinaryTreeCommon(t *testing.T) {
 		if count != test.count {
 			t.Fatal("GetCount error")
 		}
-		if test.minVal != tree.MinNode(tree.root).Val.GetHashCode() {
+		if test.minVal != tree.MinNode(tree.GetRoot()).Val.GetHashCode() {
 			t.Fatal("MinNode error")
 		}
-		if test.maxVal != tree.MaxNode(tree.root).Val.GetHashCode() {
+		if test.maxVal != tree.MaxNode(tree.GetRoot()).Val.GetHashCode() {
 			t.Fatal("MaxNode error")
 		}
 		if test.findResult != (tree.Find(integer(test.findVal)) != nil) {
@@ -350,8 +350,8 @@ func TestBinaryTreeCommon_Remove(t *testing.T) {
 		for i := 0; i < len(test.list); i++ {
 			list = append(list, test.list[i])
 		}
-		if !intEqual(list, tree.FloorList(tree.root)) {
-			t.Log(test.list, test.rmVAlue, tree.FloorList(tree.root))
+		if !intEqual(list, FloorList(tree.GetRoot())) {
+			t.Log(test.list, test.rmVAlue, FloorList(tree.GetRoot()))
 			t.Fatal("remove error", index)
 		}
 	}

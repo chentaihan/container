@@ -35,7 +35,7 @@ func newTreeEntity(key string, value interface{}) *treeEntity {
 }
 
 type TreeMap struct {
-	tree *tree.BinaryTree
+	tree tree.ITree
 }
 
 func NewTreeMap() IMap {

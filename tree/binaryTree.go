@@ -20,7 +20,7 @@ type BinaryTree struct {
 	count int
 }
 
-func NewBinaryTree() *BinaryTree {
+func NewBinaryTree() ITree {
 	return &BinaryTree{}
 }
 
@@ -85,6 +85,10 @@ func (tree *BinaryTree) Find(val IObject) *TreeNode {
 
 func (tree *BinaryTree) GetDepth() int {
 	return treeDepth(tree.root)
+}
+
+func (tree *BinaryTree) GetRoot() *TreeNode {
+	return tree.root
 }
 
 /**
@@ -193,12 +197,12 @@ func toList(root *TreeNode, list *[]IObject) {
 }
 
 //层序遍历
-func (tree *BinaryTree) FloorList(root *TreeNode) []IObject {
+func FloorList(root *TreeNode) []IObject {
 	ret := make([]IObject, 0)
 	if root == nil {
 		return ret
 	}
-	queue := queue.NewQueue(tree.count / 2)
+	queue := queue.NewQueue(0)
 	queue.Enqueue(root)
 	for !queue.Empty() {
 		node, _ := queue.Dequeue()
