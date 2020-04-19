@@ -102,7 +102,7 @@ func priorityQueueTest() {
 	for i := 0; i < count; i++ {
 		heap.Push(integer(i))
 	}
-	if !heap.Exist(integer(20)) {
+	if !heap.Contains(integer(20)) {
 		fmt.Println("Contain error")
 	}
 	if !heap.Remove(integer(20)) {
@@ -196,27 +196,51 @@ func main() {
 
 ## <a id="排序数组">3：排序数组</a>
 
+
+```go
+//数组接口
+
+type IArray interface {
+	Add(val IObject)                       //添加元素
+	Get(index int) (IObject, bool)         //根据下标获取元素
+	Index(val IObject) int                 //获取指定值对应的下标，不存在就返回-1
+	RemoveIndex(index int) (IObject, bool) //删除对应下标的元素
+	Remove(value IObject) int              //删除指定的值
+	Len() int                              //元素个数
+	Clear()                                //删除所有元素
+	GetArray() []IObject                   //返回所有元素（不复制）
+	Copy() []IObject                       //复制所有元素
+}
+
+type IObject interface {
+	GetValue() int //按照这个函数排序
+}
+```
+
+
+
 ```go
 package main
 
 import (
 	"fmt"
 	"github.com/chentaihan/container/array"
-	"github.com/chentaihan/container/common"
 )
+
+type integer int
+
+func (i integer) GetValue() int {
+	return int(i)
+}
 
 func main() {
 	tests := []struct {
-		array  []int
-		result []int
+		array  []integer
+		result []integer
 	}{
 		{
-			[]int{1, 3, 2},
-			[]int{1, 2, 3},
-		},
-		{
-			[]int{1, 3, 2, 4, 6, 5, 9, 8, 7},
-			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]integer{1, 3, 2, 4, 6, 5, 9, 8, 7},
+			[]integer{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		},
 	}
 	for index, test := range tests {
@@ -224,15 +248,30 @@ func main() {
 		for i := 0; i < len(test.array); i++ {
 			as.Add(test.array[i])
 		}
+		var result []array.IObject
+		for i := 0; i < len(test.result); i++ {
+			result = append(result, test.result[i])
+		}
 		list := as.GetArray()
-		if !common.IntEqual(list, test.result) {
+		if !IntEqual(list, result) {
 			fmt.Println(list, test.result)
 			fmt.Println("add error ", index)
 		}
-		as.RemoveValue(1)
+		as.Remove(integer(1))
 	}
 }
 
+func IntEqual(nums1, nums2 []array.IObject) bool {
+	if len(nums1) != len(nums2) {
+		return false
+	}
+	for i := 0; i < len(nums1); i++ {
+		if nums1[i].GetValue() != nums2[i].GetValue() {
+			return false
+		}
+	}
+	return true
+}
 
 ```
 
@@ -491,70 +530,105 @@ func main() {
 
 ## <a id="二叉搜索树">6：二叉搜索树</a>
 
+
+```go
+//树接口
+
+type ITree interface {
+	Add(val IObject)                  //添加元素
+	Find(val IObject) *TreeNode       //查找元素
+	GetRoot() *TreeNode               //获取根节点
+	Remove(val IObject) bool          //删除元素
+	GetDepth() int                    //树深度
+	GetCount() int                    //节点个数
+	MinNode(root *TreeNode) *TreeNode //获取最小子节点（从当前节点开始查找）
+	MaxNode(root *TreeNode) *TreeNode //获取最大子节点（从当前节点开始查找）
+	ToList() []IObject                //获取所有节点值
+}
+```
+
+
+
 ```go
 package main
 
 import (
 	"fmt"
-	"github.com/chentaihan/container/common"
 	"github.com/chentaihan/container/tree"
 )
 
+type integer int
+
+func (i integer) GetHashCode() int {
+	return int(i)
+}
+
+func intEqual(nums1, nums2 []tree.IObject) bool {
+	if (nums1 == nil && nums2 != nil) || (nums1 != nil && nums2 == nil) {
+		return false
+	}
+	if len(nums1) != len(nums2) {
+		return false
+	}
+	for i := 0; i < len(nums1); i++ {
+		if nums1[i].GetHashCode() != nums2[i].GetHashCode() {
+			return false
+		}
+	}
+	return true
+}
+
+
 func main() {
 	tests := []struct {
-		nums       []int
+		nums       []integer
 		depth      int
 		count      int
 		minVal     int
 		maxVal     int
 		findVal    int
 		findResult bool
-		list       []int
+		list       []integer
 	}{
 		{
-			[]int{5, 4, 8, 2, 3, 9, 1, 6, 7, 15, 12, 20, 14, 11, 25, 18},
-			6,
-			16,
-			1,
-			25,
-			18,
-			true,
-			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 14, 15, 18, 20, 25},
-		},
-		{
-			[]int{5, 4, 8, 2, 3, 9, 1, 6, 7, 15, 12, 20, 14, 11, 25, 18, 30},
+			[]integer{5, 4, 8, 2, 3, 9, 1, 6, 7, 15, 12, 20, 14, 11, 25, 18, 30},
 			7,
 			17,
 			1,
 			30,
 			13,
 			false,
-			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 14, 15, 18, 20, 25, 30},
+			[]integer{1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 14, 15, 18, 20, 25, 30},
 		},
 	}
 	for _, test := range tests {
-		tree := tree.NewBinaryTreeInt()
-		tree.AddRange(test.nums)
-		if tree.GetDepth() != test.depth {
+		root := tree.NewBinaryTree()
+		for i := 0; i < len(test.nums); i++ {
+			root.Add(test.nums[i])
+		}
+		if root.GetDepth() != test.depth {
 			fmt.Println("GetDepth error")
 		}
-		count := tree.GetCount()
+		count := root.GetCount()
 		if count != test.count {
 			fmt.Println("GetCount error")
 		}
-		if test.minVal != tree.MinNode(tree.GetRoot()).Val {
+		if test.minVal != root.MinNode(root.GetRoot()).Val.GetHashCode() {
 			fmt.Println("MinNode error")
 		}
-		if test.maxVal != tree.MaxNode(tree.GetRoot()).Val {
+		if test.maxVal != root.MaxNode(root.GetRoot()).Val.GetHashCode() {
 			fmt.Println("MaxNode error")
 		}
-		if test.findResult != (tree.Find(test.findVal) != nil) {
+		if test.findResult != (root.Find(integer(test.findVal)) != nil) {
 			fmt.Println("Find error")
 		}
-		if !common.IntEqual(test.list, tree.ToList()) {
+		var list []tree.IObject
+		for i := 0; i < len(test.list); i++ {
+			list = append(list, test.list[i])
+		}
+		if !intEqual(list, root.ToList()) {
 			fmt.Println("ToList error")
 		}
-		tree.Remove(1)
 	}
 }
 
@@ -667,7 +741,7 @@ func main() {
 	for i := 0; i < count; i++ {
 		heap.Push(integer(i))
 	}
-	if !heap.Exist(integer(20)) {
+	if !heap.Contains(integer(20)) {
 		fmt.Println("Contain error")
 	}
 	if !heap.Remove(integer(20)) {

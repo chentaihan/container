@@ -39,7 +39,6 @@ func main() {
 	}
 }
 
-
 func IntEqual(nums1, nums2 []array.IObject) bool {
 	if len(nums1) != len(nums2) {
 		return false
