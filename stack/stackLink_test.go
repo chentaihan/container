@@ -1,13 +1,12 @@
 package stack
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestNewStackLink(t *testing.T) {
 	var s IStack = NewStackLink()
-	size := 10
+	size := 1000
 	for i := 0; i < size; i++ {
 		s.Push(i)
 	}
@@ -16,8 +15,8 @@ func TestNewStackLink(t *testing.T) {
 	}
 	t.Logf("cap=%v", s.Cap())
 	for !s.Empty() {
-		if val, exist := s.Top(); exist {
-			fmt.Println(val)
+		if val, exist := s.Top(); !exist {
+			t.Fatal("top error", val)
 		}
 		s.Pop()
 	}

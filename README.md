@@ -1,5 +1,7 @@
 # Container
 
+## <a href="https://github.com/chentaihan/container/wiki/golang实现常用集合原理介绍">golang实现常用集合原理介绍</a>
+
 ## 常用集合实现
 
 * <a href="#队列">队列</a>
