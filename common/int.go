@@ -134,3 +134,19 @@ func IntBinarySearchPos(nums []int, target int) (int, bool) {
 		return middle + 1, false
 	}
 }
+
+//在指定位置插入一个元素
+func IntInsertValue(nums []int, index, value int) []int {
+	nums = append(nums, value)
+	if index >= len(nums) {
+		return nums
+	}
+	if index < 0 {
+		index = 0
+	}
+	for i := len(nums) - 1; i > index; i-- {
+		nums[i] = nums[i-1]
+	}
+	nums[index] = value
+	return nums
+}
