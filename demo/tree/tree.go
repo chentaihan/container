@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/chentaihan/container/tree"
+	"github.com/chentaihan/container/binaryTree"
 )
 
 type integer int
@@ -11,7 +11,7 @@ func (i integer) GetHashCode() int {
 	return int(i)
 }
 
-func intEqual(nums1, nums2 []tree.IObject) bool {
+func intEqual(nums1, nums2 []binaryTree.IObject) bool {
 	if (nums1 == nil && nums2 != nil) || (nums1 != nil && nums2 == nil) {
 		return false
 	}
@@ -50,7 +50,7 @@ func main() {
 		},
 	}
 	for _, test := range tests {
-		root := tree.NewBinaryTree()
+		root := binaryTree.NewBinaryTree()
 		for i := 0; i < len(test.nums); i++ {
 			root.Add(test.nums[i])
 		}
@@ -70,7 +70,7 @@ func main() {
 		if test.findResult != (root.Find(integer(test.findVal)) != nil) {
 			fmt.Println("Find error")
 		}
-		var list []tree.IObject
+		var list []binaryTree.IObject
 		for i := 0; i < len(test.list); i++ {
 			list = append(list, test.list[i])
 		}

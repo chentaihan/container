@@ -5,7 +5,7 @@ package hashmap
 import (
 	"encoding/json"
 	"github.com/chentaihan/container/common"
-	"github.com/chentaihan/container/tree"
+	"github.com/chentaihan/container/binaryTree"
 )
 
 type IObject interface {
@@ -35,12 +35,12 @@ func newTreeEntity(key string, value interface{}) *treeEntity {
 }
 
 type TreeMap struct {
-	tree tree.ITree
+	tree binaryTree.ITree
 }
 
 func NewTreeMap() IMap {
 	return &TreeMap{
-		tree: tree.NewBinaryTree(),
+		tree: binaryTree.NewBinaryTree(),
 	}
 }
 
@@ -77,7 +77,7 @@ func (tm *TreeMap) Len() int {
 }
 
 func (tm *TreeMap) Clear() {
-	tm.tree = tree.NewBinaryTree()
+	tm.tree = binaryTree.NewBinaryTree()
 }
 
 func (tm *TreeMap) Values() []interface{} {

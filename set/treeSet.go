@@ -1,14 +1,14 @@
 package set
 
-import "github.com/chentaihan/container/tree"
+import "github.com/chentaihan/container/binaryTree"
 
 type TreeSet struct {
-	tree *tree.BinaryTreeInt
+	tree *binaryTree.BinaryTreeInt
 }
 
 func NewTreeSet() ISet {
 	return &TreeSet{
-		tree: tree.NewBinaryTreeInt(),
+		tree: binaryTree.NewBinaryTreeInt(),
 	}
 }
 
@@ -33,7 +33,7 @@ func (as *TreeSet) Len() int {
 }
 
 func (as *TreeSet) Clear() {
-	as.tree = tree.NewBinaryTreeInt()
+	as.tree = binaryTree.NewBinaryTreeInt()
 }
 
 func (as *TreeSet) GetArray() []int {

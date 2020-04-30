@@ -1,4 +1,4 @@
-package tree
+package binaryTree
 
 import (
 	"github.com/chentaihan/container/queue"

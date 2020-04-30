@@ -53,9 +53,7 @@ func IntEqualTwoDim(nums1, nums2 [][]int) bool {
 
 func IntCopy(array []int) []int {
 	ret := make([]int, len(array))
-	for i := 0; i < len(array); i++ {
-		ret[i] = array[i]
-	}
+	copy(ret, array)
 	return ret
 }
 
@@ -88,10 +86,17 @@ func IntRemoveValue(array []int, val int) []int {
 }
 
 func IntRemoveIndex(array []int, index int) []int {
-	if len(array) == 0 || index < 0 || index >= len(array) {
-		return array
-	}
-	return append(array[:index], array[index+1:]...)
+	copy(array[index:], array[index+1:])
+	array = array[:len(array)-1]
+	return array
+}
+
+//在指定位置插入一个元素
+func IntInsertValue(nums []int, index, value int) []int {
+	nums = append(nums, 0)
+	copy(nums[index+1:], nums[index:])
+	nums[index] = value
+	return nums
 }
 
 //二分查找
@@ -135,18 +140,3 @@ func IntBinarySearchPos(nums []int, target int) (int, bool) {
 	}
 }
 
-//在指定位置插入一个元素
-func IntInsertValue(nums []int, index, value int) []int {
-	nums = append(nums, value)
-	if index >= len(nums) {
-		return nums
-	}
-	if index < 0 {
-		index = 0
-	}
-	for i := len(nums) - 1; i > index; i-- {
-		nums[i] = nums[i-1]
-	}
-	nums[index] = value
-	return nums
-}

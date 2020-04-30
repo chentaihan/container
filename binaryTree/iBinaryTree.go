@@ -1,4 +1,4 @@
-package tree
+package binaryTree
 
 //树接口
 
