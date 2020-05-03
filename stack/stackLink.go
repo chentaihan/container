@@ -23,7 +23,7 @@ func (sk *StackLink) Pop() (interface{}, bool) {
 	return sk.list.RemoveFront()
 }
 
-/** Get the top element. */
+/** Find the top element. */
 func (sk *StackLink) Top() (interface{}, bool) {
 	return sk.list.Front()
 }

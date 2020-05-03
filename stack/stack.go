@@ -36,7 +36,7 @@ func (sk *Stack) Pop() (interface{}, bool) {
 	return val, true
 }
 
-/** Get the top element. */
+/** Find the top element. */
 func (sk *Stack) Top() (interface{}, bool) {
 	if sk.size == 0 {
 		return nil, false
