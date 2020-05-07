@@ -5,7 +5,7 @@ import "container/heap"
 type smallHeapList []IObject
 
 func (h *smallHeapList) Less(i, j int) bool {
-	return (*h)[i].GetValue() < (*h)[j].GetValue()
+	return (*h)[i].GetHashCode() < (*h)[j].GetHashCode()
 }
 
 func (h *smallHeapList) Swap(i, j int) {
@@ -87,11 +87,11 @@ func (bh *SmallHeap) Copy() []IObject {
 }
 
 func (bh *SmallHeap) Remove(h IObject) bool {
-	if bh.Len() == 0 || h.GetValue() < bh.Peek().GetValue() {
+	if bh.Len() == 0 || h.GetHashCode() < bh.Peek().GetHashCode() {
 		return false
 	}
 	for i := 0; i < bh.Len(); i++ {
-		if (*bh.list)[i].GetValue() == h.GetValue() {
+		if (*bh.list)[i].GetHashCode() == h.GetHashCode() {
 			return bh.list.Remove(i)
 		}
 	}
@@ -99,11 +99,11 @@ func (bh *SmallHeap) Remove(h IObject) bool {
 }
 
 func (bh *SmallHeap) Exist(h IObject) bool {
-	if bh.Len() == 0 || bh.Peek().GetValue() > h.GetValue() {
+	if bh.Len() == 0 || bh.Peek().GetHashCode() > h.GetHashCode() {
 		return false
 	}
 	for i := 0; i < bh.Len(); i++ {
-		if (*bh.list)[i].GetValue() == h.GetValue() {
+		if (*bh.list)[i].GetHashCode() == h.GetHashCode() {
 			return true
 		}
 	}

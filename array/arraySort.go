@@ -54,7 +54,7 @@ func (as *ArraySort) Remove(value IObject) int {
 		return 0
 	}
 	start, end := index, index
-	for start >= 0 && as.buf[start].GetValue() == value.GetValue() {
+	for start >= 0 && as.buf[start].GetHashCode() == value.GetHashCode() {
 		start--
 	}
 	for end < as.size && as.buf[end] == value {
@@ -107,9 +107,9 @@ func BinarySearch(nums []IObject, target IObject) int {
 	start, middle, end := 0, 0, len(nums)-1
 	for start <= end {
 		middle = start + (end-start)/2
-		if nums[middle].GetValue() == target.GetValue() {
+		if nums[middle].GetHashCode() == target.GetHashCode() {
 			return middle
-		} else if nums[middle].GetValue() > target.GetValue() {
+		} else if nums[middle].GetHashCode() > target.GetHashCode() {
 			end = middle - 1
 		} else {
 			start = middle + 1
@@ -126,9 +126,9 @@ func BinarySearchPos(nums []IObject, target IObject) (int, bool) {
 	start, middle, end := 0, 0, len(nums)-1
 	for start <= end {
 		middle = start + (end-start)/2
-		if nums[middle].GetValue() == target.GetValue() {
+		if nums[middle].GetHashCode() == target.GetHashCode() {
 			return middle, true
-		} else if nums[middle].GetValue() > target.GetValue() {
+		} else if nums[middle].GetHashCode() > target.GetHashCode() {
 			end = middle - 1
 		} else {
 			start = middle + 1
@@ -136,7 +136,7 @@ func BinarySearchPos(nums []IObject, target IObject) (int, bool) {
 		}
 	}
 
-	if target.GetValue() < nums[middle].GetValue() {
+	if target.GetHashCode() < nums[middle].GetHashCode() {
 		return middle, false
 	} else {
 		return middle + 1, false

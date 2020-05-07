@@ -4,10 +4,6 @@ import (
 	"github.com/chentaihan/container/queue"
 )
 
-type IObject interface {
-	GetHashCode() int
-}
-
 type TreeNode struct {
 	Val    IObject
 	Left   *TreeNode

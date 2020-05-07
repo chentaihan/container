@@ -134,7 +134,7 @@ type trieItem struct {
 	count int
 }
 
-func (ti trieItem) GetValue() int {
+func (ti trieItem) GetHashCode() int {
 	return ti.count
 }
 

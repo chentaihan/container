@@ -3,16 +3,16 @@ package set
 import "github.com/chentaihan/container/binaryTree"
 
 type TreeSet struct {
-	tree *binaryTree.BinaryTreeInt
+	tree binaryTree.ITree
 }
 
 func NewTreeSet() ISet {
 	return &TreeSet{
-		tree: binaryTree.NewBinaryTreeInt(),
+		tree: binaryTree.NewBinaryTree(),
 	}
 }
 
-func (as *TreeSet) Add(val int) bool {
+func (as *TreeSet) Add(val IObject) bool {
 	if as.tree.Find(val) != nil {
 		return false
 	}
@@ -20,11 +20,11 @@ func (as *TreeSet) Add(val int) bool {
 	return true
 }
 
-func (as *TreeSet) Exist(val int) bool {
+func (as *TreeSet) Exist(val IObject) bool {
 	return as.tree.Find(val) != nil
 }
 
-func (as *TreeSet) Remove(val int) bool {
+func (as *TreeSet) Remove(val IObject) bool {
 	return as.tree.Remove(val)
 }
 
@@ -33,15 +33,14 @@ func (as *TreeSet) Len() int {
 }
 
 func (as *TreeSet) Clear() {
-	as.tree = binaryTree.NewBinaryTreeInt()
+	as.tree = binaryTree.NewBinaryTree()
 }
 
-func (as *TreeSet) GetArray() []int {
-	return as.tree.ToList()
-}
-
-func (as *TreeSet) Copy() []int {
-	list := make([]int, as.tree.GetCount())
-	copy(list, as.GetArray())
-	return list
+func (as *TreeSet) GetArray() []IObject {
+	list := as.tree.ToList()
+	result := make([]IObject, len(list))
+	for i := 0; i < len(list); i++ {
+		result[i] = list[i]
+	}
+	return result
 }

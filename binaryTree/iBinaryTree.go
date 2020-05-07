@@ -13,3 +13,7 @@ type ITree interface {
 	MaxNode(root *TreeNode) *TreeNode //获取最大子节点（从当前节点开始查找）
 	ToList() []IObject                //获取所有节点值
 }
+
+type IObject interface {
+	GetHashCode() int
+}

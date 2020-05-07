@@ -6,7 +6,7 @@ import (
 
 type integer int
 
-func (i integer) GetValue() int {
+func (i integer) GetHashCode() int {
 	return int(i)
 }
 
@@ -216,7 +216,7 @@ func IntEqual(nums1, nums2 []IObject) bool {
 		return false
 	}
 	for i := 0; i < len(nums1); i++ {
-		if nums1[i].GetValue() != nums2[i].GetValue() {
+		if nums1[i].GetHashCode() != nums2[i].GetHashCode() {
 			return false
 		}
 	}

@@ -18,8 +18,8 @@ func TestNewSmallHeap(t *testing.T) {
 	for heap.Len() > 0 {
 		l := heap.Len()
 		val := heap.Pop()
-		if val.GetValue() != count-l {
-			t.Fatal("pop error", val.GetValue(), count-l)
+		if val.GetHashCode() != count-l {
+			t.Fatal("pop error", val.GetHashCode(), count-l)
 		}
 	}
 	for i := 0; i < count; i++ {

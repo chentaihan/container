@@ -2,9 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/chentaihan/container/common"
 	"github.com/chentaihan/container/set"
 )
+
+
+type integer int
+
+func (i integer) GetHashCode() int {
+	return int(i)
+}
 
 func main() {
 	tests := []struct {
@@ -60,17 +66,17 @@ func main() {
 	}
 
 	for index, test := range tests {
-		var s set.ISet = set.NewSet()
+		//var s set.ISet = set.NewSet()
+		//var s set.ISet = set.NewTreeSet()
+		var s set.ISet = set.NewSetSort()
 		for i := 0; i < len(test.list); i++ {
-			s.Add(test.list[i])
+			s.Add(integer(test.list[i]))
 		}
 		if s.Len() != test.size {
 			fmt.Println("size error", index)
 		}
-		if !common.IntEqualSort(s.GetArray(), test.sortList) {
-			fmt.Println("add error", index)
-		}
-		s.Remove(1)
+
+		s.Remove(integer(1))
 		s.Clear()
 	}
 }

@@ -1,7 +1,7 @@
 package heap
 
 type IObject interface {
-	GetValue() int //按照这个函数排序
+	GetHashCode() int //按照这个函数排序
 }
 
 type IHeap interface {
