@@ -1,5 +1,9 @@
 package heap
 
+/**
+堆接口
+ */
+
 type IObject interface {
 	GetHashCode() int //按照这个函数排序
 }

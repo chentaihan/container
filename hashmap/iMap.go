@@ -1,6 +1,8 @@
 package hashmap
 
-//map接口
+/*
+map接口
+ */
 
 type IMap interface {
 	Set(key string, value interface{})  //添加元素，已存在就覆盖

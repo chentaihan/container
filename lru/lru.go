@@ -1,4 +1,4 @@
-package cache
+package lru
 
 import "container/list"
 
@@ -14,7 +14,7 @@ type Lru struct {
 	size int
 }
 
-func NewLru(cap int) *Lru {
+func NewLru(cap int) ILru {
 	if cap < 0 {
 		cap = 0
 	}

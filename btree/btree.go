@@ -44,7 +44,7 @@ import (
 //     memory use.
 //   * Since interfaces can point to values anywhere in memory, values are
 //     most likely not stored in contiguous blocks, resulting in a higher
-//     number of cache misses.
+//     number of lru misses.
 // These issues don't tend to matter, though, when working with strings or other
 // heap-allocated structures, since C++-equivalent structures also must store
 // pointers and also distribute their values across the heap.

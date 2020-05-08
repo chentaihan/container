@@ -1,6 +1,8 @@
 package trie
 
-//前缀树接口
+/*
+前缀树接口
+ */
 
 type ITrie interface {
 	Add(word string)            //添加元素

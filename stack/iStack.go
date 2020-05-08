@@ -1,6 +1,8 @@
 package stack
 
-//栈接口
+/*
+栈接口
+ */
 
 type IStack interface {
 	Push(x interface{})       //入栈

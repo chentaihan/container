@@ -1,6 +1,9 @@
 package set
 
-import "github.com/chentaihan/container/array"
+import (
+	"github.com/chentaihan/container/array"
+	"unsafe"
+)
 
 type SetSort struct {
 	as array.IArray
@@ -39,9 +42,5 @@ func (ss *SetSort) Clear() {
 
 func (ss *SetSort) GetArray() []IObject {
 	list := ss.as.GetArray()
-	result := make([]IObject, len(list))
-	for i := 0; i < len(list); i++ {
-		result[i] = list[i]
-	}
-	return result
+	return *(*[]IObject)(unsafe.Pointer(&list))
 }

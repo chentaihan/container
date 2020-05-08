@@ -66,16 +66,16 @@ func main() {
 	}
 
 	for index, test := range tests {
-		//var s set.ISet = set.NewSet()
+		var s set.ISet = set.NewSet()
 		//var s set.ISet = set.NewTreeSet()
-		var s set.ISet = set.NewSetSort()
+		//var s set.ISet = set.NewSetSort()
 		for i := 0; i < len(test.list); i++ {
 			s.Add(integer(test.list[i]))
 		}
 		if s.Len() != test.size {
 			fmt.Println("size error", index)
 		}
-
+		fmt.Println(s.GetArray())
 		s.Remove(integer(1))
 		s.Clear()
 	}

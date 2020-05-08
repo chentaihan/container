@@ -1,6 +1,9 @@
 package set
 
-import "github.com/chentaihan/container/binaryTree"
+import (
+	"github.com/chentaihan/container/binaryTree"
+	"unsafe"
+)
 
 type TreeSet struct {
 	tree binaryTree.ITree
@@ -38,9 +41,5 @@ func (as *TreeSet) Clear() {
 
 func (as *TreeSet) GetArray() []IObject {
 	list := as.tree.ToList()
-	result := make([]IObject, len(list))
-	for i := 0; i < len(list); i++ {
-		result[i] = list[i]
-	}
-	return result
+	return *(*[]IObject)(unsafe.Pointer(&list))
 }

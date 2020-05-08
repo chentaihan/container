@@ -1,6 +1,8 @@
 package link
 
-//链表接口
+/*
+链表接口
+ */
 
 type ILinkList interface {
 	PushFront(val interface{})        //首部添加元素

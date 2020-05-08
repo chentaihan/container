@@ -1,6 +1,8 @@
 package binaryTree
 
-//树接口
+/*
+二叉搜索树接口
+ */
 
 type ITree interface {
 	Add(val IObject)                  //添加元素

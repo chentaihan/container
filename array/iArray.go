@@ -1,6 +1,8 @@
 package array
 
-//数组接口
+/*
+排序数组接口
+ */
 
 type IArray interface {
 	Add(val IObject)                       //添加元素

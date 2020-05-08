@@ -1,5 +1,9 @@
 package heap
 
+/**
+小堆
+ */
+
 import "container/heap"
 
 type smallHeapList []IObject
