@@ -1,30 +1,30 @@
 package set
 
 type Set struct {
-	m map[int]IObject
+	m map[IObject]struct{}
 }
 
 func NewSet() ISet {
 	return &Set{
-		m: make(map[int]IObject),
+		m: make(map[IObject]struct{}),
 	}
 }
 
 func (as *Set) Add(val IObject) bool {
-	if _, exist := as.m[val.GetHashCode()]; exist {
+	if _, exist := as.m[val]; exist {
 		return false
 	}
-	as.m[val.GetHashCode()] = val
+	as.m[val] = struct{}{}
 	return true
 }
 
 func (as *Set) Exist(val IObject) bool {
-	_, exist := as.m[val.GetHashCode()]
+	_, exist := as.m[val]
 	return exist
 }
 
 func (as *Set) Remove(val IObject) bool {
-	delete(as.m, val.GetHashCode())
+	delete(as.m, val)
 	return true
 }
 
@@ -33,14 +33,14 @@ func (as *Set) Len() int {
 }
 
 func (as *Set) Clear() {
-	as.m = make(map[int]IObject)
+	as.m = make(map[IObject]struct{})
 }
 
 func (as *Set) GetArray() []IObject {
 	list := make([]IObject, len(as.m))
 	index := 0
-	for _, val := range as.m {
-		list[index] = val
+	for key := range as.m {
+		list[index] = key
 		index++
 	}
 	return list
