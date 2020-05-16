@@ -7,7 +7,7 @@ import (
 
 type integer int
 
-func (i integer) GetValue() int {
+func (i integer) GetHashCode() int {
 	return int(i)
 }
 
@@ -28,8 +28,8 @@ func main() {
 	for heap.Len() > 0 {
 		l := heap.Len()
 		val := heap.Pop()
-		if val.GetValue() != l-1 {
-			fmt.Println("pop error", val.GetValue(), l-1)
+		if val.GetHashCode() != l-1 {
+			fmt.Println("pop error", val.GetHashCode(), l-1)
 		}
 	}
 	for i := 0; i < count; i++ {

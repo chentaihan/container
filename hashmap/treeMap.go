@@ -8,10 +8,6 @@ import (
 	"github.com/chentaihan/container/binaryTree"
 )
 
-type IObject interface {
-	GetHashCode() int
-}
-
 type treeEntity struct {
 	entity
 	hashCode int

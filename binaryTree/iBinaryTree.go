@@ -1,6 +1,8 @@
 package binaryTree
 
-//树接口
+/*
+二叉搜索树接口
+ */
 
 type ITree interface {
 	Add(val IObject)                  //添加元素
@@ -12,4 +14,8 @@ type ITree interface {
 	MinNode(root *TreeNode) *TreeNode //获取最小子节点（从当前节点开始查找）
 	MaxNode(root *TreeNode) *TreeNode //获取最大子节点（从当前节点开始查找）
 	ToList() []IObject                //获取所有节点值
+}
+
+type IObject interface {
+	GetHashCode() int
 }

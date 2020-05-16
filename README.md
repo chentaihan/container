@@ -218,7 +218,7 @@ type IArray interface {
 }
 
 type IObject interface {
-	GetValue() int //按照这个函数排序
+	GetHashCode() int //按照这个函数排序
 }
 ```
 
@@ -234,7 +234,7 @@ import (
 
 type integer int
 
-func (i integer) GetValue() int {
+func (i integer) GetHashCode() int {
 	return int(i)
 }
 
@@ -271,7 +271,7 @@ func IntEqual(nums1, nums2 []array.IObject) bool {
 		return false
 	}
 	for i := 0; i < len(nums1); i++ {
-		if nums1[i].GetValue() != nums2[i].GetValue() {
+		if nums1[i].GetHashCode() != nums2[i].GetHashCode() {
 			return false
 		}
 	}
@@ -676,7 +676,7 @@ func main() {
 	}
 
 	for index, test := range tests {
-		lru := cache.NewLru(test.cap)
+		lru := lru.NewLru(test.cap)
 		for i := 0; i < len(test.list); i++ {
 			lru.Add(strconv.Itoa(test.list[i]), test.list[i])
 			list := toIntArray(lru.Values())

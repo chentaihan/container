@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/chentaihan/container/cache"
+	"github.com/chentaihan/container/lru"
 	"github.com/chentaihan/container/common"
 	"strconv"
 )
@@ -31,7 +31,7 @@ func main() {
 	}
 
 	for index, test := range tests {
-		lru := cache.NewLru(test.cap)
+		lru := lru.NewLru(test.cap)
 		for i := 0; i < len(test.list); i++ {
 			lru.Add(strconv.Itoa(test.list[i]), test.list[i])
 			list := toIntArray(lru.Values())

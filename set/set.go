@@ -1,64 +1,47 @@
 package set
 
 type Set struct {
-	list []int
-	size int
-	m    map[int]int
+	m map[IObject]struct{}
 }
 
 func NewSet() ISet {
 	return &Set{
-		list: []int{},
-		m:    make(map[int]int),
+		m: make(map[IObject]struct{}),
 	}
 }
 
-func (as *Set) Add(val int) bool {
+func (as *Set) Add(val IObject) bool {
 	if _, exist := as.m[val]; exist {
 		return false
 	}
-	as.m[val] = as.size
-	if as.size < len(as.list) {
-		as.list[as.size] = val
-	} else {
-		as.list = append(as.list, val)
-	}
-	as.size++
+	as.m[val] = struct{}{}
 	return true
 }
 
-func (as *Set) Exist(val int) bool {
+func (as *Set) Exist(val IObject) bool {
 	_, exist := as.m[val]
 	return exist
 }
 
-func (as *Set) Remove(val int) bool {
-	if index, exist := as.m[val]; !exist {
-		return false
-	} else {
-		as.list[index] = as.list[as.size-1]
-		as.size--
-		delete(as.m, val)
-		return true
-	}
+func (as *Set) Remove(val IObject) bool {
+	delete(as.m, val)
+	return true
 }
 
 func (as *Set) Len() int {
-	return as.size
+	return len(as.m)
 }
 
 func (as *Set) Clear() {
-	as.list = []int{}
-	as.size = 0
-	as.m = make(map[int]int)
+	as.m = make(map[IObject]struct{})
 }
 
-func (as *Set) GetArray() []int {
-	return as.list[:as.size]
-}
-
-func (as *Set) Copy() []int {
-	list := make([]int, as.size)
-	copy(list, as.GetArray())
+func (as *Set) GetArray() []IObject {
+	list := make([]IObject, len(as.m))
+	index := 0
+	for key := range as.m {
+		list[index] = key
+		index++
+	}
 	return list
 }

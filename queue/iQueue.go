@@ -1,5 +1,9 @@
 package queue
 
+/**
+队列接口
+ */
+
 type IQueue interface {
 	Enqueue(val interface{})      //入队
 	Dequeue() (interface{}, bool) //出队

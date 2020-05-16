@@ -1,5 +1,10 @@
 package btree
 
+/**
+BTree
+copy & edit from https://github.com/google/btree
+*/
+
 type IBTree interface {
 	Clone() IBTree               //复制
 	Add(item IObject) IObject    //添加元素，已经存在的更新

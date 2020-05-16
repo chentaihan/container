@@ -1,9 +1,12 @@
 package set
 
-import "github.com/chentaihan/container/array"
+import (
+	"github.com/chentaihan/container/array"
+	"unsafe"
+)
 
 type SetSort struct {
-	as *array.ArraySort
+	as array.IArray
 }
 
 func NewSetSort() ISet {
@@ -12,7 +15,7 @@ func NewSetSort() ISet {
 	}
 }
 
-func (ss *SetSort) Add(val int) bool {
+func (ss *SetSort) Add(val IObject) bool {
 	index := ss.as.Index(val)
 	if index >= 0 {
 		return false
@@ -21,11 +24,11 @@ func (ss *SetSort) Add(val int) bool {
 	return true
 }
 
-func (ss *SetSort) Exist(val int) bool {
+func (ss *SetSort) Exist(val IObject) bool {
 	return ss.as.Index(val) >= 0
 }
 
-func (ss *SetSort) Remove(val int) bool {
+func (ss *SetSort) Remove(val IObject) bool {
 	return ss.as.Remove(val) > 0
 }
 
@@ -37,10 +40,7 @@ func (ss *SetSort) Clear() {
 	ss.as.Clear()
 }
 
-func (ss *SetSort) GetArray() []int {
-	return ss.as.GetArray()
-}
-
-func (ss *SetSort) Copy() []int {
-	return ss.Copy()
+func (ss *SetSort) GetArray() []IObject {
+	list := ss.as.GetArray()
+	return *(*[]IObject)(unsafe.Pointer(&list))
 }

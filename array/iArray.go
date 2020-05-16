@@ -1,6 +1,8 @@
 package array
 
-//数组接口
+/*
+排序数组接口
+ */
 
 type IArray interface {
 	Add(val IObject)                       //添加元素
@@ -15,5 +17,5 @@ type IArray interface {
 }
 
 type IObject interface {
-	GetValue() int //按照这个函数排序
+	GetHashCode() int //按照这个函数排序
 }
