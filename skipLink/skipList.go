@@ -1,93 +1,99 @@
 package skipLink
 
-import "math/rand"
+/**
+跳跃表实现的是一个多层的单链表
+*/
+
+import (
+	"math/rand"
+)
+
+const maxLevel = 32
 
 type skipListNode struct {
 	key   int
-	val   IObject
+	val   interface{}
 	nexts []*skipListNode
-	prev  *skipListNode
-	level int
 }
 
 type SkipList struct {
-	head     *skipListNode
-	maxLevel int
-	size     int
+	head  *skipListNode
+	level int
+	size  int
 }
 
-func NewSkipList(maxLevel int) *SkipList {
-	if maxLevel < 0 {
-		maxLevel = 32
-	}
+func NewSkipList() ISkipList {
 	sl := &SkipList{}
-	sl.head = sl.createNode(-1, nil)
-	sl.maxLevel = maxLevel
+	sl.head = sl.createNode(-1, nil, maxLevel)
+	sl.level = 1
 	return sl
 }
 
-func (sl *SkipList) Add(key int, val IObject) {
-	curNode := sl.find(key)
-	if curNode.key == key {
-		curNode.val = val
-		for i := 0; i < curNode.level; i++ {
-			curNode.nexts[i].val = val
-		}
+func (sl *SkipList) Add(key int, val interface{}) {
+	nodeList := sl.find(key)
+	if nodeList[0].nexts[0] != nil && nodeList[0].nexts[0].key == key {
+		nodeList[0].nexts[0].val = val
 		return
 	}
-	newNode := sl.createNode(key, val)
-	sl.headExtend(newNode.level)
 
-	newNode.prev = curNode
-	nextNode := curNode.nexts[0]
-	if nextNode != nil {
-		nextNode.prev = newNode
-		
+	level := sl.randomLevel()
+	newNode := sl.createNode(key, val, level)
+	minLevel := level
+	if len(nodeList) < minLevel {
+		minLevel = len(nodeList)
 	}
-
-	start := 0
-	for {
-		minLevel := curNode.level
-		if newNode.level < minLevel {
-			minLevel = newNode.level
-		}
-		for i := start; i < minLevel; i++ {
-			newNode.nexts[i] = curNode.nexts[i]
-			newNode.nexts[i].prev = curNode
-			curNode.nexts[i] = newNode.nexts[i]
-		}
-		if minLevel == newNode.level {
-			break
-		}
-		start = minLevel
-		curNode = curNode.prev
+	for i := 0; i < minLevel; i++ {
+		newNode.nexts[i] = nodeList[i].nexts[i]
+		nodeList[i].nexts[i] = newNode
 	}
-
+	if level > sl.level {
+		for i := sl.level; i < level; i++ {
+			sl.head.nexts[i] = newNode
+		}
+		sl.level = level
+	}
+	sl.size++
 }
 
-func (sl *SkipList) find(key int) *skipListNode {
-	var head, cur *skipListNode = sl.head, nil
-	buf := make([]*skipListNode, head.level)
-	for i := head.level; i >= 0; i-- {
-		cur = head.nexts[i]
-		for cur != nil && cur.key < key {
+func (sl *SkipList) find(key int) []*skipListNode {
+	buf := make([]*skipListNode, sl.level)
+	for i := sl.level - 1; i >= 0; i-- {
+		cur := sl.head
+		for cur.nexts[i] != nil && cur.nexts[i].key < key {
 			cur = cur.nexts[i]
 		}
 		buf[i] = cur
 	}
-	return buf[0]
+	return buf
 }
 
-func (sl *SkipList) Find(key int) (IObject, bool) {
-	node := sl.find(key)
-	if node != nil && node.key == key {
-		return node.val, true
+func (sl *SkipList) Find(key int) (interface{}, bool) {
+	nodeList := sl.find(key)
+	if nodeList[0].nexts[0] != nil && nodeList[0].nexts[0].key == key {
+		return nodeList[0].nexts[0].val, true
 	}
 	return nil, false
 }
 
-func (sl *SkipList) Remove(key int) (IObject, bool) {
-	return nil, false
+func (sl *SkipList) Remove(key int) (interface{}, bool) {
+	nodeList := sl.find(key)
+	var value interface{}
+	exist := false
+	for i := 0; i < len(nodeList); i++ {
+		if nodeList[i].nexts[i] == nil {
+			continue
+		}
+		next := nodeList[i].nexts[i]
+		if next.key == key {
+			value = next.val
+			exist = true
+			nodeList[i].nexts[i] = next.nexts[i]
+		}
+	}
+	if exist {
+		sl.size--
+	}
+	return value, exist
 }
 
 func (sl *SkipList) Len() int {
@@ -95,53 +101,49 @@ func (sl *SkipList) Len() int {
 }
 
 func (sl *SkipList) Clear() {
-
+	for i := 0; i < sl.level; i++ {
+		sl.head.nexts[i] = nil
+	}
+	sl.level = 1
+	sl.size = 0
 }
 
-func (sl *SkipList) GetArray() []IObject {
-	return nil
+func (sl *SkipList) GetKeys() []int {
+	list := make([]int, sl.size)
+	node := sl.head.nexts[0]
+	for i := 0; i < sl.size; i++ {
+		list[i] = node.key
+		node = node.nexts[0]
+	}
+	return list
 }
 
-func (sl *SkipList) Copy() []IObject {
-	return nil
+func (sl *SkipList) GetValues() []interface{} {
+	list := make([]interface{}, sl.size)
+	node := sl.head.nexts[0]
+	for i := 0; i < sl.size; i++ {
+		list[i] = node.val
+		node = node.nexts[0]
+	}
+	return list
 }
 
 func (sl *SkipList) randomLevel() int {
 	level := 1
-	for rand.Int31n(2) == 1 && level < sl.maxLevel {
+	for rand.Int31n(2) == 1 && level < maxLevel {
 		level++
 	}
 	return level
 }
 
-func (sl *SkipList) createNode(key int, val IObject) *skipListNode {
-	level := sl.randomLevel()
-	node := &skipListNode{
+func (sl *SkipList) createNode(key int, val interface{}, level int) *skipListNode {
+	return &skipListNode{
 		key:   key,
 		val:   val,
-		level: level,
 		nexts: make([]*skipListNode, level),
 	}
-	for i := 0; i < level; i++ {
-		node.nexts[i] = &skipListNode{
-			key:   node.key,
-			val:   node.val,
-			level: level,
-		}
-	}
-	return node
 }
 
-func (sl *SkipList) headExtend(level int) {
-	//如果新节点高度大于首节点高度，首节点高度新增到同样高度
-	if level > sl.head.level {
-		for i := sl.head.level; i < level; i++ {
-			sl.head.nexts = append(sl.head.nexts, &skipListNode{
-				key:   -1,
-				val:   nil,
-				level: level,
-			})
-		}
-		sl.head.level = level
-	}
+func (sl *SkipList) GetLevel() int {
+	return sl.level
 }

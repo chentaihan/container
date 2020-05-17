@@ -5,15 +5,12 @@ package skipLink
 */
 
 type ISkipList interface {
-	Add(val IObject)               //添加元素
-	Get(index int) (IObject, bool) //根据下标获取元素
-	Remove(value IObject) bool     //删除指定的值
-	Len() int                      //元素个数
-	Clear()                        //删除所有元素
-	GetArray() []IObject           //返回所有元素（不复制）
-	Copy() []IObject               //复制所有元素
-}
-
-type IObject interface {
-	GetHashCode() int //按照这个函数排序
+	Add(key int, val interface{})                        //添加元素，已经存在的覆盖
+	Find(key int) (interface{}, bool)                    //根据下标获取元素
+	Remove(key int) (interface{}, bool)                  //删除指定的值
+	Len() int                                            //元素个数
+	Clear()                                              //删除所有元素
+	GetValues() []interface{}                            //返回所有元素的值
+	GetKeys() []int                                      //返回所有元素的key
+	GetLevel() int                                       //层数
 }
