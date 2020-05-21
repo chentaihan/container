@@ -37,12 +37,14 @@ func (sl *SkipList) Add(key int, val IObject) {
 	}
 	newNode := sl.createNode(key, val)
 	sl.headExtend(newNode.level)
-
 	newNode.prev = curNode
+	//后一个节点的prev指向新节点
 	nextNode := curNode.nexts[0]
 	if nextNode != nil {
 		nextNode.prev = newNode
-		
+		for i := 0; i < newNode.level; i++ {
+			nextNode.nexts[i].prev = newNode
+		}
 	}
 
 	start := 0
