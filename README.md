@@ -4,22 +4,22 @@
 
 ## 常用集合实现
 
-* <a href="#队列">队列</a>
-* <a href="#队列">优先级队列</a>
-* <a href="#栈">栈</a>
-* <a href="#排序数组">排序数组</a>
-* <a href="#单链表">单链表</a>
-* <a href="https://github.com/chentaihan/container/tree/master/skipLink">跳跃表</a>
-* <a href="#Map">Map</a>
+* <a href="#队列">队列(queue)</a>
+* <a href="#队列">优先级队列(priorityQueue)</a>
+* <a href="#栈">栈(stack)</a>
+* <a href="#排序数组">排序数组(arraySort)</a>
+* <a href="#单链表">单链表(singleLinked)</a>
+* <a href="https://github.com/chentaihan/container/tree/master/skipLink">跳跃表(skipList)</a>
+* <a href="#Map">字典(map)</a>
 * <a href="#Set">Set</a>
 * <a href="#Set">SetSort</a>
-* <a href="#二叉搜索树">二叉搜索树</a>
-* <a href="https://github.com/chentaihan/container/tree/master/trie">前缀树</a>
-* <a href="https://github.com/chentaihan/container/tree/master/btree">btree</a>
+* <a href="#二叉搜索树">二叉搜索树(binaryTree)</a>
+* <a href="https://github.com/chentaihan/container/tree/master/trie">前缀树(trie)</a>
+* <a href="https://github.com/chentaihan/container/tree/master/btree">B树(btree)</a>
 * <a href="#LRU">LRU</a>
 * <a href="#LRU">LRU过期时间</a>
-* <a href="#堆">堆</a>
-* <a href="https://github.com/chentaihan/container/tree/master/pool">内存池</a>
+* <a href="#堆">堆(heap)</a>
+* <a href="https://github.com/chentaihan/container/tree/master/pool">内存池(memoryPool)</a>
 * <a href="https://github.com/chentaihan/container/tree/master/common">常用函数</a>
 
 
