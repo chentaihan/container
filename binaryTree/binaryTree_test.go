@@ -186,7 +186,7 @@ func TestNewBinaryTreeCommon(t *testing.T) {
 			t.Fatal("MaxNode error")
 		}
 		if test.findResult != (tree.Find(integer(test.findVal)) != nil) {
-			t.Fatal("Find error")
+			t.Fatal("Get error")
 		}
 		var list []IObject
 		for i := 0; i < len(test.list); i++ {

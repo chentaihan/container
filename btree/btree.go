@@ -230,6 +230,7 @@ type node struct {
 	cow      *copyOnWriteContext
 }
 
+//复制节点
 func (n *node) mutableFor(cow *copyOnWriteContext) *node {
 	if n.cow == cow {
 		return n
@@ -251,6 +252,7 @@ func (n *node) mutableFor(cow *copyOnWriteContext) *node {
 	return out
 }
 
+//复制第i个子节点
 func (n *node) mutableChild(i int) *node {
 	c := n.children[i].mutableFor(n.cow)
 	n.children[i] = c
@@ -317,10 +319,10 @@ func (n *node) insert(item IObject, maxItems int) IObject {
 
 // get finds the given key in the subtree and returns it.
 func (n *node) get(key IObject) IObject {
-	i, found := n.items.find(key)
-	if found {
+	i, found := n.items.find(key) //在当前节点二分查找
+	if found { //就是当前节点
 		return n.items[i]
-	} else if len(n.children) > 0 {
+	} else if len(n.children) > 0 { //对应的子节点查找
 		return n.children[i].get(key)
 	}
 	return nil
@@ -805,7 +807,7 @@ func (t *BTree) Descend(iterator ItemIterator) {
 	t.root.iterate(descend, nil, nil, false, false, iterator)
 }
 
-// Find looks for the key item in the binaryTree, returning it.  It returns nil if
+// Get looks for the key item in the binaryTree, returning it.  It returns nil if
 // unable to find that item.
 func (t *BTree) Find(key IObject) IObject {
 	if t.root == nil {

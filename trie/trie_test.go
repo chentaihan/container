@@ -195,7 +195,7 @@ func TestTrie_Remove(t *testing.T) {
 		trie.Add(test.str)
 		result := trie.Find(test.find)
 		if result != test.result {
-			t.Fatal("Find error ", index)
+			t.Fatal("Get error ", index)
 		}
 		trie.Remove(test.find)
 		result = trie.Find(test.find)

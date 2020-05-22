@@ -68,7 +68,7 @@ func main() {
 			fmt.Println("MaxNode error")
 		}
 		if test.findResult != (root.Find(integer(test.findVal)) != nil) {
-			fmt.Println("Find error")
+			fmt.Println("Get error")
 		}
 		var list []binaryTree.IObject
 		for i := 0; i < len(test.list); i++ {

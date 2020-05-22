@@ -37,8 +37,8 @@ func main() {
 	tree.RemoveMax()
 	fmt.Println("min:", tree.Min())
 	fmt.Println("max:", tree.Max())
-	fmt.Println("Find 1=", tree.Find(Integer(1)))
-	fmt.Println("Find 20=", tree.Find(Integer(20)))
+	fmt.Println("Get 1=", tree.Find(Integer(1)))
+	fmt.Println("Get 20=", tree.Find(Integer(20)))
 	tree.Clear(false)
 	fmt.Println("len", tree.Len())
 
