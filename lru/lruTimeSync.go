@@ -38,6 +38,14 @@ type command struct {
 	response chan *response
 }
 
+func newCommand(action Action, request *request) *command {
+	return &command{
+		action:   action,
+		request:  request,
+		response: make(chan *response),
+	}
+}
+
 type LruTimeSync struct {
 	lruTime ILruTime
 	cmdC    chan *command
@@ -48,7 +56,7 @@ type LruTimeSync struct {
 func NewLruTimeSync(cap int) ILruTime {
 	lru := &LruTimeSync{
 		lruTime: NewLruTime(cap),
-		cmdC:    make(chan *command, 6),
+		cmdC:    make(chan *command, 36),
 		stopC:   make(chan struct{}),
 		doneC:   make(chan struct{}),
 	}
@@ -69,7 +77,7 @@ func (mq *LruTimeSync) runLoop() {
 			mq.handleCmd(cmd)
 		case <-mq.stopC:
 			return
-		case <-time.After(time.Second / 10):  //定期删除过期数据
+		case <-time.After(time.Second / 10): //定期删除过期数据
 			mq.lruTime.RemoveOutOfTime()
 		}
 	}
@@ -119,29 +127,18 @@ func (mq *LruTimeSync) handleCmd(cmd *command) {
 // 添加元素，如果已经存在的就更新过期时间
 // expireTime秒后自动删除
 func (mq *LruTimeSync) Add(val IObject, expireTime int64) {
-	cmd := &command{
-		action: ACTION_ADD,
-		request: &request{
-			val:        val,
-			expireTime: expireTime,
-			hashCode:   0,
-		},
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_ADD, &request{
+		val:        val,
+		expireTime: expireTime,
+	})
 	mq.cmdC <- cmd
 	<-cmd.response
 }
 
 func (mq *LruTimeSync) Get(hashCode int) (IObject, bool) {
-	cmd := &command{
-		action: ACTION_GET,
-		request: &request{
-			val:        nil,
-			expireTime: 0,
-			hashCode:   hashCode,
-		},
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_GET, &request{
+		hashCode:   hashCode,
+	})
 	mq.cmdC <- cmd
 	response := <-cmd.response
 	var result IObject
@@ -156,11 +153,7 @@ func (mq *LruTimeSync) RemoveOutOfTime() int {
 }
 
 func (mq *LruTimeSync) Peek() (IObject, bool) {
-	cmd := &command{
-		action:   ACTION_PEEK,
-		request:  nil,
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_PEEK, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
 	var result IObject
@@ -171,32 +164,20 @@ func (mq *LruTimeSync) Peek() (IObject, bool) {
 }
 
 func (mq *LruTimeSync) Len() int {
-	cmd := &command{
-		action:   ACTION_LEN,
-		request:  nil,
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_LEN, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
 	return response.size
 }
 
 func (mq *LruTimeSync) Clear() {
-	cmd := &command{
-		action:   ACTION_CLEAR,
-		request:  nil,
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_CLEAR, nil)
 	mq.cmdC <- cmd
 	<-cmd.response
 }
 
 func (mq *LruTimeSync) GetArray() []IObject {
-	cmd := &command{
-		action:   ACTION_GETARRAY,
-		request:  nil,
-		response: make(chan *response),
-	}
+	cmd := newCommand(ACTION_GETARRAY, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
 	var result []IObject
