@@ -133,6 +133,7 @@ func (mq *LruTimeSync) Add(val IObject, expireTime int64) {
 	})
 	mq.cmdC <- cmd
 	<-cmd.response
+	close(cmd.response)
 }
 
 func (mq *LruTimeSync) Get(hashCode int) (IObject, bool) {
@@ -141,6 +142,7 @@ func (mq *LruTimeSync) Get(hashCode int) (IObject, bool) {
 	})
 	mq.cmdC <- cmd
 	response := <-cmd.response
+	close(cmd.response)
 	var result IObject
 	if response.result != nil {
 		result = response.result.(IObject)
@@ -156,6 +158,7 @@ func (mq *LruTimeSync) Peek() (IObject, bool) {
 	cmd := newCommand(ACTION_PEEK, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
+	close(cmd.response)
 	var result IObject
 	if response.result != nil {
 		result = response.result.(IObject)
@@ -167,6 +170,7 @@ func (mq *LruTimeSync) Len() int {
 	cmd := newCommand(ACTION_LEN, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
+	close(cmd.response)
 	return response.size
 }
 
@@ -174,12 +178,14 @@ func (mq *LruTimeSync) Clear() {
 	cmd := newCommand(ACTION_CLEAR, nil)
 	mq.cmdC <- cmd
 	<-cmd.response
+	close(cmd.response)
 }
 
 func (mq *LruTimeSync) GetArray() []IObject {
 	cmd := newCommand(ACTION_GETARRAY, nil)
 	mq.cmdC <- cmd
 	response := <-cmd.response
+	close(cmd.response)
 	var result []IObject
 	if response.result != nil {
 		result = response.result.([]IObject)
