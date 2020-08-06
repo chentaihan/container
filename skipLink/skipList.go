@@ -2,6 +2,8 @@ package skipLink
 
 /**
 跳跃表实现的是一个多层的单链表
+一个元素一个节点，每个节点可能有多个指向后面节点的指针，每层的指针指向离他最近且高度大于等于他的节点
+每个指针都是指向一个节点，而不是节点的某一层
 */
 
 import (
@@ -56,8 +58,8 @@ func (sl *SkipList) Add(key int, val interface{}) {
 
 func (sl *SkipList) find(key int) []*skipListNode {
 	buf := make([]*skipListNode, sl.level)
+	cur := sl.head
 	for i := sl.level - 1; i >= 0; i-- {
-		cur := sl.head
 		for cur.nexts[i] != nil && cur.nexts[i].key < key {
 			cur = cur.nexts[i]
 		}

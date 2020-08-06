@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+	testCompareSkipListWithList()
+}
+
+func testSkipList() {
 	sl := skipLink.NewSkipList()
 	sl.Add(0, 0)
 	sl.Remove(0)
@@ -20,17 +24,17 @@ func main() {
 	for i := 1; i < 10; i++ {
 		sl.Add(i, i)
 	}
-	fmt.Println("level:", sl.GetLevel())
+	fmt.Println("list:", sl.GetValues())
 	sl.Remove(5)
-	fmt.Println(sl.GetValues())
-	sl.Add(5,5)
+	fmt.Println("remove 5: ", sl.GetValues())
+	sl.Add(5, 5)
 	sl.Remove(0)
 	sl.Remove(9)
-	fmt.Println(sl.GetValues())
+	fmt.Println("add 5,remove 0,9: ", sl.GetValues())
 
 	sl.Add(-1, -1)
 	sl.Add(20, 20)
-	fmt.Println(sl.GetValues())
+	fmt.Println("add -1,20: ", sl.GetValues())
 	for i := -1; i < 22; i++ {
 		val, exist := sl.Find(i)
 		fmt.Println(i, val, exist)
@@ -69,36 +73,19 @@ func main() {
 			fmt.Println(sl.GetLevel())
 		}
 	}
-	fmt.Println("start find...")
-	for i := 0; i < 3000; i++ {
-		val, exist := sl.Find(i)
-		if !exist && val != i {
-			fmt.Println(i, val)
-		}
-	}
 
-	startTime := time.Now()
-	for i := 0; i < 3000; i++ {
-		val, exist := sl.Remove(i)
-		if !exist && val != i {
-			fmt.Println(i, val)
-		}
-	}
-	useTime := time.Now().Sub(startTime)
-	fmt.Println(useTime)
-	fmt.Println(sl.GetValues())
 }
 
-func testCompareTime() {
+func testCompareSkipListWithList() {
 	sl := skipLink.NewSkipList()
-	count := 10000
+	const count = 10000
 	for i := 0; i < count; i++ {
 		sl.Add(i, i)
 	}
 	startTime := time.Now()
-	for i := 0; i < 3000; i++ {
+	for i := 0; i < count; i++ {
 		val, exist := sl.Find(i)
-		if !exist && val != i {
+		if exist && val != i {
 			fmt.Println(i, val)
 		}
 	}
